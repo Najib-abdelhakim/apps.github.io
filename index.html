@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Mes Souvenirs</title>
 
-    <!-- Supabase SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Supabase SDK - Version stable -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
 
     <style>
         * {
@@ -404,14 +404,14 @@
             <input type="email" id="authEmail" placeholder="Email">
             <input type="password" id="authPassword" placeholder="Code (6 caracteres minimum)">
 
-            <button class="btn-auth" id="authMainBtn" onclick="handleAuth()">Se connecter</button>
+            <button class="btn-auth" id="authMainBtn">Se connecter</button>
 
             <div id="authSwitchContainer">
-                <span class="switch-link" id="authSwitchLink" onclick="toggleAuthMode()">Creer un compte</span>
+                <span class="switch-link" id="authSwitchLink">Creer un compte</span>
             </div>
 
             <div id="forgotContainer">
-                <span class="forgot-link" onclick="resetPassword()">Code oublie ?</span>
+                <span class="forgot-link" id="forgotLink">Code oublie ?</span>
             </div>
 
             <a class="nav-link" href="souvenirs.html">← Aller a la Communaute</a>
@@ -509,6 +509,32 @@
         let currentUser = null;
 
         // ============================================================
+        // ATTACHER LES EVENEMENTS
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Bouton principal (connexion / creation)
+            document.getElementById('authMainBtn').addEventListener('click', handleAuth);
+
+            // Switch login / register
+            document.getElementById('authSwitchLink').addEventListener('click', toggleAuthMode);
+
+            // Mot de passe oublie
+            document.getElementById('forgotLink').addEventListener('click', resetPassword);
+
+            // Entree pour valider
+            document.getElementById('authEmail').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') document.getElementById('authPassword').focus();
+            });
+
+            document.getElementById('authPassword').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') handleAuth();
+            });
+
+            // Verifier la session
+            checkSession();
+        });
+
+        // ============================================================
         // VERIFIER LA SESSION
         // ============================================================
         async function checkSession() {
@@ -567,7 +593,7 @@
         }
 
         // ============================================================
-        // AUTH
+        // AUTH - Connexion / Creation
         // ============================================================
         async function handleAuth() {
             const email = document.getElementById('authEmail').value.trim();
@@ -630,7 +656,7 @@
         }
 
         // ============================================================
-        // REINITIALISER LE CODE
+        // REINITIALISER LE CODE (Mot de passe oublie)
         // ============================================================
         async function resetPassword() {
             const email = document.getElementById('authEmail').value.trim();
@@ -645,7 +671,9 @@
                 return;
             }
 
-            const { error } = await supabase.auth.resetPasswordForEmail(email);
+            const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                redirectTo: window.location.origin + window.location.pathname
+            });
 
             if (error) {
                 if (error.message.includes('not found')) {
@@ -994,11 +1022,6 @@
                 input.dispatchEvent(new Event('change'));
             }
         });
-
-        // ============================================================
-        // DEMARRER
-        // ============================================================
-        checkSession();
 
         console.log('✅ Admin - Mes Souvenirs prete !');
         console.log('🔑 Supabase URL:', SUPABASE_URL);
