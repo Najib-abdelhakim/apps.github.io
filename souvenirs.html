@@ -13,7 +13,7 @@
         }
 
         body {
-            background: #f0f2f5;
+            background: #fdf0f5;
             min-height: 100vh;
             padding: 16px;
         }
@@ -24,12 +24,13 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #6C5B7B, #355C7D);
+            background: linear-gradient(135deg, #e8b4d8, #c9a0d4);
             color: white;
             border-radius: 24px;
             padding: 20px;
             margin-bottom: 16px;
             text-align: center;
+            box-shadow: 0 4px 15px rgba(201, 160, 212, 0.3);
         }
 
         .header h1 {
@@ -47,40 +48,59 @@
             border-radius: 20px;
             padding: 16px 20px;
             margin-bottom: 16px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 12px rgba(201, 160, 212, 0.1);
             display: flex;
             align-items: center;
             gap: 10px;
             flex-wrap: wrap;
+            border: 1px solid #f5e8f0;
         }
 
         .visitor-box label {
             font-weight: 600;
-            color: #2d3436;
+            color: #6b4c7a;
             font-size: 0.9rem;
         }
 
         .visitor-box input {
             flex: 1;
             padding: 8px 14px;
-            border: 2px solid #e8e8e8;
+            border: 2px solid #f0e0f0;
             border-radius: 10px;
             font-size: 0.9rem;
             outline: none;
             min-width: 120px;
+            background: #fdf8fc;
         }
 
         .visitor-box input:focus {
-            border-color: #6C5B7B;
+            border-color: #c9a0d4;
         }
 
         .visitor-box .visitor-name-display {
             font-weight: 600;
-            color: #6C5B7B;
+            color: #c9a0d4;
             font-size: 0.95rem;
             padding: 6px 14px;
-            background: #f0edff;
+            background: #fdf0f8;
             border-radius: 10px;
+        }
+
+        .visitor-box button {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #e8b4d8, #c9a0d4);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 12px rgba(201, 160, 212, 0.3);
+        }
+
+        .visitor-box button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(201, 160, 212, 0.4);
         }
 
         .card {
@@ -88,7 +108,14 @@
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 16px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 12px rgba(201, 160, 212, 0.1);
+            border: 1px solid #f5e8f0;
+        }
+
+        .card h2 {
+            font-size: 1rem;
+            color: #6b4c7a;
+            margin-bottom: 12px;
         }
 
         .post {
@@ -96,15 +123,15 @@
             border-radius: 16px;
             overflow: hidden;
             margin-bottom: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            border: 1px solid #e8e8e8;
+            box-shadow: 0 2px 8px rgba(201, 160, 212, 0.1);
+            border: 1px solid #f5e8f0;
         }
 
         .post .post-img {
             width: 100%;
             height: 280px;
             object-fit: cover;
-            background: #f0f0f0;
+            background: #fdf0f5;
             cursor: pointer;
             transition: 0.3s;
         }
@@ -120,18 +147,18 @@
         .post .post-title {
             font-size: 1.1rem;
             font-weight: 700;
-            color: #2d3436;
+            color: #6b4c7a;
         }
 
         .post .post-date {
             font-size: 0.8rem;
-            color: #888;
+            color: #b08bb8;
             margin-top: 2px;
         }
 
         .post .post-text {
             font-size: 0.95rem;
-            color: #444;
+            color: #5a4a5a;
             margin-top: 8px;
             line-height: 1.5;
         }
@@ -141,7 +168,7 @@
             gap: 10px;
             margin-top: 12px;
             padding-top: 12px;
-            border-top: 1px solid #f0f0f0;
+            border-top: 1px solid #f5e8f0;
             flex-wrap: wrap;
         }
 
@@ -152,42 +179,42 @@
             cursor: pointer;
             font-weight: 600;
             font-size: 0.85rem;
-            transition: 0.2s;
+            transition: 0.3s;
             display: flex;
             align-items: center;
             gap: 4px;
         }
 
         .post .post-actions .like-btn {
-            background: #f0edff;
-            color: #6C5B7B;
+            background: #fdf0f8;
+            color: #c9a0d4;
         }
 
         .post .post-actions .like-btn:hover {
-            background: #6C5B7B;
+            background: #c9a0d4;
             color: white;
         }
 
         .post .post-actions .comment-btn {
-            background: #e8e8e8;
-            color: #555;
+            background: #f5e8f0;
+            color: #b08bb8;
         }
 
         .post .post-actions .comment-btn:hover {
-            background: #ddd;
+            background: #e8d4e0;
         }
 
         .post .post-comments {
             margin-top: 10px;
             padding-top: 10px;
-            border-top: 1px solid #f0f0f0;
+            border-top: 1px solid #f5e8f0;
         }
 
         .post .post-comments .comment {
             font-size: 0.85rem;
-            color: #555;
+            color: #5a4a5a;
             padding: 4px 0;
-            border-bottom: 1px solid #f5f5f5;
+            border-bottom: 1px solid #f5e8f0;
         }
 
         .post .post-comments .comment:last-child {
@@ -195,7 +222,7 @@
         }
 
         .post .post-comments .comment strong {
-            color: #2d3436;
+            color: #6b4c7a;
         }
 
         .post .comment-input-group {
@@ -208,20 +235,21 @@
         .post .comment-input-group input[type="text"] {
             flex: 1;
             padding: 8px 12px;
-            border: 2px solid #e8e8e8;
+            border: 2px solid #f0e0f0;
             border-radius: 10px;
             font-size: 0.85rem;
             outline: none;
             min-width: 120px;
+            background: #fdf8fc;
         }
 
         .post .comment-input-group input[type="text"]:focus {
-            border-color: #6C5B7B;
+            border-color: #c9a0d4;
         }
 
         .post .comment-input-group button {
             padding: 8px 14px;
-            background: #6C5B7B;
+            background: linear-gradient(135deg, #e8b4d8, #c9a0d4);
             color: white;
             border: none;
             border-radius: 10px;
@@ -229,16 +257,19 @@
             cursor: pointer;
             font-size: 0.8rem;
             white-space: nowrap;
+            transition: 0.3s;
+            box-shadow: 0 4px 12px rgba(201, 160, 212, 0.3);
         }
 
         .post .comment-input-group button:hover {
-            background: #5a4b68;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(201, 160, 212, 0.4);
         }
 
         .empty-state {
             text-align: center;
             padding: 30px 10px;
-            color: #999;
+            color: #b08bb8;
         }
 
         .empty-state .icon {
@@ -309,7 +340,7 @@
         }
 
         .lightbox .close-lightbox:hover {
-            color: #f5576c;
+            color: #e8b4d8;
             transform: rotate(90deg);
         }
 
@@ -383,9 +414,7 @@
         <div class="visitor-box">
             <label>Votre nom :</label>
             <input type="text" id="visitorNameInput" placeholder="Entrez votre nom..." maxlength="30">
-            <button style="padding:8px 16px; background:#6C5B7B; color:white; border:none; border-radius:10px; font-weight:600; cursor:pointer;" onclick="setVisitorName()">
-                OK
-            </button>
+            <button onclick="setVisitorName()">OK</button>
             <span class="visitor-name-display" id="visitorNameDisplay">Visiteur</span>
         </div>
 
@@ -429,10 +458,8 @@
             renderCommunity();
         }
 
-        // Charger le nom sauvegarde
         document.getElementById('visitorNameDisplay').textContent = visitorName;
 
-        // Entree pour valider le nom
         document.getElementById('visitorNameInput').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 setVisitorName();
@@ -440,13 +467,10 @@
         });
 
         // ============================================================
-        // DONNEES (partagees avec admin.html via localStorage)
+        // DONNEES
         // ============================================================
         let souvenirs = JSON.parse(localStorage.getItem('souvenirsAlbum')) || [];
 
-        // ============================================================
-        // SAUVEGARDER
-        // ============================================================
         function saveSouvenirs() {
             localStorage.setItem('souvenirsAlbum', JSON.stringify(souvenirs));
         }
@@ -464,7 +488,7 @@
         }
 
         // ============================================================
-        // COMMENTER (avec le nom du visiteur)
+        // COMMENTER
         // ============================================================
         function addComment(id) {
             const input = document.getElementById('commentInput_' + id);
@@ -475,7 +499,6 @@
                 return;
             }
 
-            // Utiliser le nom du visiteur ou "Visiteur" par defaut
             const name = visitorName || 'Visiteur';
 
             const s = souvenirs.find(s => s.id === id);
@@ -540,7 +563,7 @@
                     <div class="empty-state">
                         <span class="icon">📸</span>
                         <p>Aucun souvenir partage</p>
-                        <p style="font-size:0.8rem;">Les souvenirs apparaîtront ici</p>
+                        <p style="font-size:0.8rem;">Les souvenirs apparaitront ici</p>
                     </div>
                 `;
                 return;
@@ -564,7 +587,7 @@
                         <div class="post-comments" id="comments_${s.id}" style="display:none;">
                             ${s.comments && s.comments.length > 0 ? s.comments.map(c => `
                                 <div class="comment"><strong>${c.user}</strong> : ${c.text}</div>
-                            `).join('') : '<div style="color:#999; font-size:0.8rem; padding:4px 0;">Aucun commentaire</div>'}
+                            `).join('') : '<div style="color:#b08bb8; font-size:0.8rem; padding:4px 0;">Aucun commentaire</div>'}
                             <div class="comment-input-group">
                                 <input type="text" id="commentInput_${s.id}" placeholder="Ecrire un commentaire...">
                                 <button onclick="addComment(${s.id})">Envoyer</button>
@@ -576,7 +599,7 @@
         }
 
         // ============================================================
-        // RAFRAICHIR LES DONNEES (si l'admin ajoute depuis une autre page)
+        // STORAGE
         // ============================================================
         window.addEventListener('storage', function(e) {
             if (e.key === 'souvenirsAlbum') {

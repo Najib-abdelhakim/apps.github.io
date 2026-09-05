@@ -13,7 +13,7 @@
         }
 
         body {
-            background: #f0f2f5;
+            background: #fdf0f5;
             min-height: 100vh;
             padding: 16px;
             display: flex;
@@ -28,12 +28,13 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #6C5B7B, #355C7D);
+            background: linear-gradient(135deg, #e8b4d8, #c9a0d4);
             color: white;
             border-radius: 24px;
             padding: 20px;
             margin-bottom: 16px;
             text-align: center;
+            box-shadow: 0 4px 15px rgba(201, 160, 212, 0.3);
         }
 
         .header h1 {
@@ -49,7 +50,7 @@
             display: inline-block;
             margin-top: 10px;
             padding: 8px 20px;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.25);
             color: white;
             border-radius: 12px;
             text-decoration: none;
@@ -58,7 +59,7 @@
         }
 
         .header .nav-link:hover {
-            background: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.4);
         }
 
         .card {
@@ -66,12 +67,13 @@
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 16px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 12px rgba(201, 160, 212, 0.1);
+            border: 1px solid #f5e8f0;
         }
 
         .card h2 {
             font-size: 1rem;
-            color: #2d3436;
+            color: #6b4c7a;
             margin-bottom: 12px;
         }
 
@@ -80,8 +82,9 @@
             background: white;
             border-radius: 24px;
             padding: 40px 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px rgba(201, 160, 212, 0.2);
             text-align: center;
+            border: 1px solid #f5e8f0;
         }
 
         .login-container .lock-icon {
@@ -91,12 +94,12 @@
         }
 
         .login-container h2 {
-            color: #2d3436;
+            color: #6b4c7a;
             margin-bottom: 6px;
         }
 
         .login-container p {
-            color: #888;
+            color: #b08bb8;
             font-size: 0.9rem;
             margin-bottom: 20px;
         }
@@ -104,22 +107,23 @@
         .login-container input {
             width: 100%;
             padding: 14px;
-            border: 2px solid #e8e8e8;
+            border: 2px solid #f0e0f0;
             border-radius: 14px;
             font-size: 1.1rem;
             text-align: center;
             outline: none;
             letter-spacing: 4px;
+            background: #fdf8fc;
         }
 
         .login-container input:focus {
-            border-color: #6C5B7B;
+            border-color: #c9a0d4;
         }
 
         .login-container .btn-login {
             width: 100%;
             padding: 14px;
-            background: #6C5B7B;
+            background: linear-gradient(135deg, #e8b4d8, #c9a0d4);
             color: white;
             border: none;
             border-radius: 14px;
@@ -128,10 +132,12 @@
             cursor: pointer;
             margin-top: 12px;
             transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(201, 160, 212, 0.3);
         }
 
         .login-container .btn-login:hover {
-            background: #5a4b68;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(201, 160, 212, 0.4);
         }
 
         .login-container .error-msg {
@@ -144,13 +150,14 @@
         .login-container .nav-link {
             display: inline-block;
             margin-top: 16px;
-            color: #6C5B7B;
+            color: #c9a0d4;
             text-decoration: none;
             font-weight: 600;
         }
 
         .login-container .nav-link:hover {
             text-decoration: underline;
+            color: #b08bb8;
         }
 
         /* ===== ADMIN CONTENT ===== */
@@ -159,18 +166,18 @@
         }
 
         .upload-zone {
-            border: 3px dashed #ddd;
+            border: 3px dashed #f0e0f0;
             border-radius: 16px;
             padding: 30px 20px;
             text-align: center;
             cursor: pointer;
             transition: 0.3s;
-            background: #fafafa;
+            background: #fdf8fc;
         }
 
         .upload-zone:hover {
-            border-color: #6C5B7B;
-            background: #f8f6ff;
+            border-color: #c9a0d4;
+            background: #fdf0f8;
         }
 
         .upload-zone .icon {
@@ -180,7 +187,7 @@
         }
 
         .upload-zone .text {
-            color: #888;
+            color: #b08bb8;
             font-size: 0.85rem;
         }
 
@@ -199,17 +206,18 @@
         .input-group textarea {
             flex: 1;
             padding: 10px 14px;
-            border: 2px solid #e8e8e8;
+            border: 2px solid #f0e0f0;
             border-radius: 12px;
             font-size: 0.95rem;
             outline: none;
             min-width: 100px;
             font-family: inherit;
+            background: #fdf8fc;
         }
 
         .input-group input:focus,
         .input-group textarea:focus {
-            border-color: #6C5B7B;
+            border-color: #c9a0d4;
         }
 
         .input-group textarea {
@@ -220,7 +228,7 @@
 
         .btn-add {
             padding: 10px;
-            background: #6C5B7B;
+            background: linear-gradient(135deg, #e8b4d8, #c9a0d4);
             color: white;
             border: none;
             border-radius: 12px;
@@ -228,11 +236,13 @@
             cursor: pointer;
             width: 100%;
             margin-top: 8px;
-            transition: 0.2s;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(201, 160, 212, 0.3);
         }
 
         .btn-add:hover {
-            background: #5a4b68;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(201, 160, 212, 0.4);
         }
 
         .admin-item {
@@ -240,7 +250,7 @@
             align-items: center;
             gap: 12px;
             padding: 10px 0;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f5e8f0;
         }
 
         .admin-item:last-child {
@@ -252,7 +262,7 @@
             height: 50px;
             border-radius: 10px;
             object-fit: cover;
-            background: #f0f0f0;
+            background: #fdf0f5;
             flex-shrink: 0;
         }
 
@@ -262,27 +272,29 @@
 
         .admin-item .admin-info .admin-title {
             font-weight: 600;
-            color: #2d3436;
+            color: #6b4c7a;
             font-size: 0.9rem;
         }
 
         .admin-item .admin-info .admin-date {
             font-size: 0.75rem;
-            color: #888;
+            color: #b08bb8;
         }
 
         .admin-item .admin-delete {
             background: none;
             border: none;
-            color: #e74c3c;
+            color: #e8b4d8;
             cursor: pointer;
             font-size: 1.1rem;
             padding: 4px 8px;
             border-radius: 8px;
+            transition: 0.3s;
         }
 
         .admin-item .admin-delete:hover {
-            background: #fff0f3;
+            background: #fdf0f5;
+            color: #e74c3c;
         }
 
         .stats-grid {
@@ -295,19 +307,19 @@
         .stats-grid .stat-item .number {
             font-size: 1.4rem;
             font-weight: 700;
-            color: #6C5B7B;
+            color: #c9a0d4;
         }
 
         .stats-grid .stat-item .label {
             font-size: 0.65rem;
-            color: #888;
+            color: #b08bb8;
         }
 
         .btn-reset {
             padding: 10px;
-            background: #e8e8e8;
-            color: #555;
-            border: none;
+            background: #fdf0f5;
+            color: #b08bb8;
+            border: 2px solid #f0e0f0;
             border-radius: 12px;
             font-weight: 600;
             cursor: pointer;
@@ -317,13 +329,14 @@
         }
 
         .btn-reset:hover {
-            background: #ddd;
+            background: #f5e8f0;
+            border-color: #c9a0d4;
         }
 
         .empty-state {
             text-align: center;
             padding: 30px 10px;
-            color: #999;
+            color: #b08bb8;
         }
 
         .empty-state .icon {
@@ -334,8 +347,8 @@
 
         .btn-logout {
             padding: 10px;
-            background: #e74c3c;
-            color: white;
+            background: #f0d0d8;
+            color: #b05a6a;
             border: none;
             border-radius: 12px;
             font-weight: 600;
@@ -346,7 +359,7 @@
         }
 
         .btn-logout:hover {
-            background: #c0392b;
+            background: #e8c0c8;
         }
 
         @media (max-width: 480px) {
@@ -405,7 +418,7 @@
                 <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
                     <span class="icon">🖼️</span>
                     <span class="text">Clique ici pour importer une photo</span>
-                    <span style="font-size:0.7rem; color:#ccc; display:block; margin-top:4px;">JPG, PNG, GIF, WebP (max 5MB)</span>
+                    <span style="font-size:0.7rem; color:#d0b8d0; display:block; margin-top:4px;">JPG, PNG, GIF, WebP (max 5MB)</span>
                     <input type="file" id="fileInput" accept="image/*">
                 </div>
 
@@ -471,7 +484,6 @@
             document.getElementById('passwordInput').value = '';
         }
 
-        // Entree pour valider
         document.getElementById('passwordInput').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 checkPassword();
@@ -518,16 +530,10 @@
             saveSouvenirs();
         }
 
-        // ============================================================
-        // SAUVEGARDER
-        // ============================================================
         function saveSouvenirs() {
             localStorage.setItem('souvenirsAlbum', JSON.stringify(souvenirs));
         }
 
-        // ============================================================
-        // AJOUTER
-        // ============================================================
         let pendingImage = null;
 
         document.getElementById('fileInput').addEventListener('change', function(e) {
@@ -592,9 +598,6 @@
             renderAdmin();
         }
 
-        // ============================================================
-        // SUPPRIMER
-        // ============================================================
         function deleteSouvenir(id) {
             if (confirm('Supprimer ce souvenir ?')) {
                 souvenirs = souvenirs.filter(s => s.id !== id);
@@ -603,9 +606,6 @@
             }
         }
 
-        // ============================================================
-        // RENDER ADMIN
-        // ============================================================
         function renderAdmin() {
             const container = document.getElementById('adminList');
 
@@ -634,9 +634,6 @@
             `).join('');
         }
 
-        // ============================================================
-        // REINITIALISER
-        // ============================================================
         function resetAll() {
             if (souvenirs.length === 0) {
                 alert('Aucun souvenir a supprimer.');
@@ -650,9 +647,6 @@
             }
         }
 
-        // ============================================================
-        // INIT
-        // ============================================================
         const today = new Date();
         document.getElementById('souvenirDate').value = today.toISOString().split('T')[0];
 
@@ -674,18 +668,18 @@
         const uploadZone = document.getElementById('uploadZone');
         uploadZone.addEventListener('dragover', function(e) {
             e.preventDefault();
-            this.style.borderColor = '#6C5B7B';
-            this.style.background = '#f8f6ff';
+            this.style.borderColor = '#c9a0d4';
+            this.style.background = '#fdf0f8';
         });
         uploadZone.addEventListener('dragleave', function(e) {
             e.preventDefault();
-            this.style.borderColor = '#ddd';
-            this.style.background = '#fafafa';
+            this.style.borderColor = '#f0e0f0';
+            this.style.background = '#fdf8fc';
         });
         uploadZone.addEventListener('drop', function(e) {
             e.preventDefault();
-            this.style.borderColor = '#ddd';
-            this.style.background = '#fafafa';
+            this.style.borderColor = '#f0e0f0';
+            this.style.background = '#fdf8fc';
             const files = e.dataTransfer.files;
             if (files.length > 0) {
                 const input = document.getElementById('fileInput');
