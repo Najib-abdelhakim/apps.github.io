@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Communaute - Mes Souvenirs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f0f2f5;
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        .app {
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6C5B7B, #355C7D);
+            color: white;
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 1.6rem;
+        }
+
+        .header .subtitle {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        /* ===== NOM VISITEUR ===== */
+        .visitor-box {
+            background: white;
+            border-radius: 20px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .visitor-box label {
+            font-weight: 600;
+            color: #2d3436;
+            font-size: 0.9rem;
+        }
+
+        .visitor-box input {
+            flex: 1;
+            padding: 8px 14px;
+            border: 2px solid #e8e8e8;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            outline: none;
+            min-width: 120px;
+        }
+
+        .visitor-box input:focus {
+            border-color: #6C5B7B;
+        }
+
+        .visitor-box .visitor-name-display {
+            font-weight: 600;
+            color: #6C5B7B;
+            font-size: 0.95rem;
+            padding: 6px 14px;
+            background: #f0edff;
+            border-radius: 10px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        .post {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #e8e8e8;
+        }
+
+        .post .post-img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            background: #f0f0f0;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .post .post-img:hover {
+            opacity: 0.9;
+        }
+
+        .post .post-body {
+            padding: 16px;
+        }
+
+        .post .post-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2d3436;
+        }
+
+        .post .post-date {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        .post .post-text {
+            font-size: 0.95rem;
+            color: #444;
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        .post .post-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #f0f0f0;
+            flex-wrap: wrap;
+        }
+
+        .post .post-actions button {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .post .post-actions .like-btn {
+            background: #f0edff;
+            color: #6C5B7B;
+        }
+
+        .post .post-actions .like-btn:hover {
+            background: #6C5B7B;
+            color: white;
+        }
+
+        .post .post-actions .comment-btn {
+            background: #e8e8e8;
+            color: #555;
+        }
+
+        .post .post-actions .comment-btn:hover {
+            background: #ddd;
+        }
+
+        .post .post-comments {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .post .post-comments .comment {
+            font-size: 0.85rem;
+            color: #555;
+            padding: 4px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .post .post-comments .comment:last-child {
+            border-bottom: none;
+        }
+
+        .post .post-comments .comment strong {
+            color: #2d3436;
+        }
+
+        .post .comment-input-group {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .post .comment-input-group input[type="text"] {
+            flex: 1;
+            padding: 8px 12px;
+            border: 2px solid #e8e8e8;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            outline: none;
+            min-width: 120px;
+        }
+
+        .post .comment-input-group input[type="text"]:focus {
+            border-color: #6C5B7B;
+        }
+
+        .post .comment-input-group button {
+            padding: 8px 14px;
+            background: #6C5B7B;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        .post .comment-input-group button:hover {
+            background: #5a4b68;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px 10px;
+            color: #999;
+        }
+
+        .empty-state .icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* ===== LIGHTBOX ===== */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: fadeInLightbox 0.3s ease;
+        }
+
+        .lightbox.show {
+            display: flex;
+        }
+
+        @keyframes fadeInLightbox {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .lightbox .lightbox-img {
+            max-width: 100%;
+            max-height: 85vh;
+            border-radius: 12px;
+            object-fit: contain;
+            animation: zoomIn 0.3s ease;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .lightbox .close-lightbox {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 2.8rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: 0.3s;
+            font-weight: 300;
+        }
+
+        .lightbox .close-lightbox:hover {
+            color: #f5576c;
+            transform: rotate(90deg);
+        }
+
+        .lightbox .lightbox-caption {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+        }
+
+        .lightbox .lightbox-caption .lb-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .lightbox .lightbox-caption .lb-date {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        @media (max-width: 480px) {
+            .post .post-img {
+                height: 200px;
+            }
+            .post .post-actions {
+                flex-direction: column;
+                gap: 6px;
+            }
+            .post .post-actions button {
+                width: 100%;
+                justify-content: center;
+            }
+            .lightbox .close-lightbox {
+                font-size: 2rem;
+                top: 12px;
+                right: 18px;
+            }
+            .lightbox .lightbox-caption {
+                bottom: 16px;
+            }
+            .visitor-box {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .visitor-box input {
+                min-width: 100%;
+            }
+            .post .comment-input-group {
+                flex-direction: column;
+            }
+            .post .comment-input-group input[type="text"] {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app">
+
+        <div class="header">
+            <h1>Communaute</h1>
+            <div class="subtitle">Les souvenirs partages</div>
+        </div>
+
+        <!-- ===== NOM DU VISITEUR ===== -->
+        <div class="visitor-box">
+            <label>Votre nom :</label>
+            <input type="text" id="visitorNameInput" placeholder="Entrez votre nom..." maxlength="30">
+            <button style="padding:8px 16px; background:#6C5B7B; color:white; border:none; border-radius:10px; font-weight:600; cursor:pointer;" onclick="setVisitorName()">
+                OK
+            </button>
+            <span class="visitor-name-display" id="visitorNameDisplay">Visiteur</span>
+        </div>
+
+        <div class="card">
+            <div id="communityFeed">
+                <!-- Les posts s'affichent ici -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== LIGHTBOX ===== -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+        <button class="close-lightbox" onclick="closeLightbox(event)">✕</button>
+        <img class="lightbox-img" id="lightboxImg" src="" alt="Souvenir">
+        <div class="lightbox-caption">
+            <div class="lb-title" id="lbTitle">Titre</div>
+            <div class="lb-date" id="lbDate">Date</div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // NOM DU VISITEUR
+        // ============================================================
+        let visitorName = localStorage.getItem('visitorName') || 'Visiteur';
+
+        function setVisitorName() {
+            const input = document.getElementById('visitorNameInput');
+            const name = input.value.trim();
+
+            if (name === '') {
+                alert('Entre ton nom !');
+                return;
+            }
+
+            visitorName = name;
+            localStorage.setItem('visitorName', name);
+            document.getElementById('visitorNameDisplay').textContent = name;
+            input.value = '';
+            renderCommunity();
+        }
+
+        // Charger le nom sauvegarde
+        document.getElementById('visitorNameDisplay').textContent = visitorName;
+
+        // Entree pour valider le nom
+        document.getElementById('visitorNameInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                setVisitorName();
+            }
+        });
+
+        // ============================================================
+        // DONNEES (partagees avec admin.html via localStorage)
+        // ============================================================
+        let souvenirs = JSON.parse(localStorage.getItem('souvenirsAlbum')) || [];
+
+        // ============================================================
+        // SAUVEGARDER
+        // ============================================================
+        function saveSouvenirs() {
+            localStorage.setItem('souvenirsAlbum', JSON.stringify(souvenirs));
+        }
+
+        // ============================================================
+        // LIKER
+        // ============================================================
+        function likeSouvenir(id) {
+            const s = souvenirs.find(s => s.id === id);
+            if (s) {
+                s.likes = (s.likes || 0) + 1;
+                saveSouvenirs();
+                renderCommunity();
+            }
+        }
+
+        // ============================================================
+        // COMMENTER (avec le nom du visiteur)
+        // ============================================================
+        function addComment(id) {
+            const input = document.getElementById('commentInput_' + id);
+            const text = input.value.trim();
+
+            if (text === '') {
+                alert('Ecris un commentaire !');
+                return;
+            }
+
+            // Utiliser le nom du visiteur ou "Visiteur" par defaut
+            const name = visitorName || 'Visiteur';
+
+            const s = souvenirs.find(s => s.id === id);
+            if (s) {
+                if (!s.comments) s.comments = [];
+                s.comments.push({ user: name, text: text });
+                saveSouvenirs();
+                renderCommunity();
+                input.value = '';
+            }
+        }
+
+        // ============================================================
+        // TOGGLE COMMENTS
+        // ============================================================
+        function toggleComments(id) {
+            const div = document.getElementById('comments_' + id);
+            if (div.style.display === 'none') {
+                div.style.display = 'block';
+            } else {
+                div.style.display = 'none';
+            }
+        }
+
+        // ============================================================
+        // LIGHTBOX
+        // ============================================================
+        function openLightbox(imageSrc, title, date) {
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightboxImg');
+            const titleEl = document.getElementById('lbTitle');
+            const dateEl = document.getElementById('lbDate');
+
+            img.src = imageSrc;
+            titleEl.textContent = title || 'Sans titre';
+            dateEl.textContent = date || 'Date inconnue';
+
+            lightbox.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('lightbox').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLightbox(e);
+            }
+        });
+
+        // ============================================================
+        // RENDER COMMUNITY
+        // ============================================================
+        function renderCommunity() {
+            const container = document.getElementById('communityFeed');
+
+            if (souvenirs.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <span class="icon">📸</span>
+                        <p>Aucun souvenir partage</p>
+                        <p style="font-size:0.8rem;">Les souvenirs apparaîtront ici</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const sorted = [...souvenirs].reverse();
+
+            container.innerHTML = sorted.map(s => `
+                <div class="post">
+                    ${s.image ? `<img class="post-img" src="${s.image}" alt="${s.title}" onclick="openLightbox('${s.image}', '${s.title}', '${s.date}')">` : ''}
+                    <div class="post-body">
+                        <div class="post-title">${s.title}</div>
+                        <div class="post-date">📅 ${s.date}</div>
+                        <div class="post-text">${s.text}</div>
+
+                        <div class="post-actions">
+                            <button class="like-btn" onclick="likeSouvenir(${s.id})">❤️ ${s.likes || 0}</button>
+                            <button class="comment-btn" onclick="toggleComments(${s.id})">💬 ${s.comments ? s.comments.length : 0}</button>
+                        </div>
+
+                        <div class="post-comments" id="comments_${s.id}" style="display:none;">
+                            ${s.comments && s.comments.length > 0 ? s.comments.map(c => `
+                                <div class="comment"><strong>${c.user}</strong> : ${c.text}</div>
+                            `).join('') : '<div style="color:#999; font-size:0.8rem; padding:4px 0;">Aucun commentaire</div>'}
+                            <div class="comment-input-group">
+                                <input type="text" id="commentInput_${s.id}" placeholder="Ecrire un commentaire...">
+                                <button onclick="addComment(${s.id})">Envoyer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ============================================================
+        // RAFRAICHIR LES DONNEES (si l'admin ajoute depuis une autre page)
+        // ============================================================
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'souvenirsAlbum') {
+                souvenirs = JSON.parse(e.newValue) || [];
+                renderCommunity();
+            }
+        });
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        renderCommunity();
+
+        console.log('Communaute - Mes Souvenirs prete !');
+        console.log('Souvenirs :', souvenirs.length);
+        console.log('Visiteur :', visitorName);
+    </script>
+
+</body>
+</html>
