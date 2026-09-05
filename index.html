@@ -4,10 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Mes Souvenirs</title>
-
-    <!-- Supabase SDK - Version stable -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
-
     <style>
         * {
             margin: 0;
@@ -118,18 +114,6 @@
         .auth-container .btn-auth:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(201, 160, 212, 0.4);
-        }
-
-        .auth-container .btn-auth-secondary {
-            background: none;
-            color: #c9a0d4;
-            box-shadow: none;
-            border: 2px solid #f0e0f0;
-        }
-
-        .auth-container .btn-auth-secondary:hover {
-            background: #fdf0f8;
-            transform: translateY(-2px);
         }
 
         .auth-container .error-msg {
@@ -488,19 +472,29 @@
 
     <script>
         // ============================================================
-        // CONFIGURATION SUPABASE - TES INFOS
+        // SYSTEME D'AUTHENTIFICATION SIMPLE
         // ============================================================
-        const SUPABASE_URL = 'https://japbmtieghdsodivzssq.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcGJtdGllZ2hkc29kaXZ6c3NxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg2MjAxNTIsImV4cCI6MjEwNDE5NjE1Mn0.IuYN9Y6TKUWJSpwgh-S68QA8zKXBMzaTYQAQLJo2T2c';
-
-        // Initialiser Supabase
-        const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // On stocke les comptes dans localStorage
+        // Format: { "email": { email, password, created } }
 
         // ============================================================
-        // CONFIGURATION JSONBin
+        // CHARGER LES COMPTES
         // ============================================================
-        const BIN_ID = '6a9c3abbf5f4af5e296e72d0';
-        const API_KEY = '$2a$10$jgTIDATCdUPLr7vDJ.2AW.OkcAvXSk1g7YHQc/29qAuc8/qmPANT.';
+        function getAccounts() {
+            const data = localStorage.getItem('adminAccounts');
+            if (data) {
+                try {
+                    return JSON.parse(data);
+                } catch(e) {
+                    return {};
+                }
+            }
+            return {};
+        }
+
+        function saveAccounts(accounts) {
+            localStorage.setItem('adminAccounts', JSON.stringify(accounts));
+        }
 
         // ============================================================
         // ETAT
@@ -512,7 +506,7 @@
         // ATTACHER LES EVENEMENTS
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
-            // Bouton principal (connexion / creation)
+            // Bouton principal
             document.getElementById('authMainBtn').addEventListener('click', handleAuth);
 
             // Switch login / register
@@ -523,11 +517,15 @@
 
             // Entree pour valider
             document.getElementById('authEmail').addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') document.getElementById('authPassword').focus();
+                if (e.key === 'Enter') {
+                    document.getElementById('authPassword').focus();
+                }
             });
 
             document.getElementById('authPassword').addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') handleAuth();
+                if (e.key === 'Enter') {
+                    handleAuth();
+                }
             });
 
             // Verifier la session
@@ -537,15 +535,22 @@
         // ============================================================
         // VERIFIER LA SESSION
         // ============================================================
-        async function checkSession() {
-            const { data: { session }, error } = await supabase.auth.getSession();
-
-            if (session) {
-                currentUser = session.user;
-                showAdmin();
-            } else {
-                showAuth();
+        function checkSession() {
+            const savedUser = localStorage.getItem('adminCurrentUser');
+            if (savedUser) {
+                try {
+                    const user = JSON.parse(savedUser);
+                    const accounts = getAccounts();
+                    if (accounts[user.email] && accounts[user.email].password === user.password) {
+                        currentUser = user;
+                        showAdmin();
+                        return;
+                    }
+                } catch(e) {
+                    // Ignorer
+                }
             }
+            showAuth();
         }
 
         function showAdmin() {
@@ -595,7 +600,7 @@
         // ============================================================
         // AUTH - Connexion / Creation
         // ============================================================
-        async function handleAuth() {
+        function handleAuth() {
             const email = document.getElementById('authEmail').value.trim();
             const password = document.getElementById('authPassword').value.trim();
             const errorEl = document.getElementById('authError');
@@ -614,38 +619,31 @@
                 return;
             }
 
+            const accounts = getAccounts();
+
             if (isLoginMode) {
                 // CONNEXION
-                const { data, error } = await supabase.auth.signInWithPassword({
-                    email: email,
-                    password: password
-                });
-
-                if (error) {
-                    if (error.message.includes('Invalid login credentials')) {
-                        errorEl.textContent = '❌ Email ou code incorrect.';
-                    } else {
-                        errorEl.textContent = '❌ ' + error.message;
-                    }
-                } else {
+                if (accounts[email] && accounts[email].password === password) {
                     successEl.textContent = '✅ Connexion reussie !';
-                    currentUser = data.user;
+                    currentUser = { email: email, password: password };
+                    localStorage.setItem('adminCurrentUser', JSON.stringify(currentUser));
                     showAdmin();
+                } else if (accounts[email]) {
+                    errorEl.textContent = '❌ Code incorrect.';
+                } else {
+                    errorEl.textContent = '❌ Aucun compte trouve avec cet email. Cree un compte.';
                 }
             } else {
                 // CREATION DE COMPTE
-                const { data, error } = await supabase.auth.signUp({
-                    email: email,
-                    password: password
-                });
-
-                if (error) {
-                    if (error.message.includes('already registered')) {
-                        errorEl.textContent = '❌ Cet email est deja utilise. Connecte-toi.';
-                    } else {
-                        errorEl.textContent = '❌ ' + error.message;
-                    }
+                if (accounts[email]) {
+                    errorEl.textContent = '❌ Cet email est deja utilise. Connecte-toi.';
                 } else {
+                    accounts[email] = {
+                        email: email,
+                        password: password,
+                        created: new Date().toISOString()
+                    };
+                    saveAccounts(accounts);
                     successEl.textContent = '✅ Compte cree ! Connecte-toi maintenant.';
                     isLoginMode = true;
                     toggleAuthMode();
@@ -658,7 +656,7 @@
         // ============================================================
         // REINITIALISER LE CODE (Mot de passe oublie)
         // ============================================================
-        async function resetPassword() {
+        function resetPassword() {
             const email = document.getElementById('authEmail').value.trim();
             const errorEl = document.getElementById('authError');
             const successEl = document.getElementById('authSuccess');
@@ -671,29 +669,39 @@
                 return;
             }
 
-            const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: window.location.origin + window.location.pathname
-            });
+            const accounts = getAccounts();
 
-            if (error) {
-                if (error.message.includes('not found')) {
-                    errorEl.textContent = '❌ Aucun compte trouve avec cet email.';
-                } else {
-                    errorEl.textContent = '❌ ' + error.message;
-                }
-            } else {
-                successEl.textContent = '✅ Un email avec les instructions a ete envoye !';
+            if (!accounts[email]) {
+                errorEl.textContent = '❌ Aucun compte trouve avec cet email.';
+                return;
+            }
+
+            // Simuler l'envoi d'email (copier le code dans le presse-papier)
+            const newPassword = prompt('Nouveau code (6 caracteres minimum) :');
+            if (newPassword && newPassword.length >= 6) {
+                accounts[email].password = newPassword;
+                saveAccounts(accounts);
+                successEl.textContent = '✅ Code modifie avec succes ! Connecte-toi.';
+                document.getElementById('authPassword').value = '';
+            } else if (newPassword !== null) {
+                errorEl.textContent = '❌ Le code doit avoir au moins 6 caracteres.';
             }
         }
 
         // ============================================================
         // DECONNEXION
         // ============================================================
-        async function logout() {
-            await supabase.auth.signOut();
+        function logout() {
+            localStorage.removeItem('adminCurrentUser');
             currentUser = null;
             showAuth();
         }
+
+        // ============================================================
+        // CONFIGURATION JSONBin
+        // ============================================================
+        const BIN_ID = '6a9c3abbf5f4af5e296e72d0';
+        const API_KEY = '$2a$10$jgTIDATCdUPLr7vDJ.2AW.OkcAvXSk1g7YHQc/29qAuc8/qmPANT.';
 
         // ============================================================
         // DONNEES
@@ -1024,8 +1032,7 @@
         });
 
         console.log('✅ Admin - Mes Souvenirs prete !');
-        console.log('🔑 Supabase URL:', SUPABASE_URL);
-        console.log('👤 Authentification activee');
+        console.log('👤 Authentification simplifiee activee');
     </script>
 
 </body>
