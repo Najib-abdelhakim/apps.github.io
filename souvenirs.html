@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Mes Souvenirs</title>
+    <title>Communaute - Mes Souvenirs</title>
     <style>
         * {
             margin: 0;
@@ -16,14 +16,10 @@
             background: #fdf0f5;
             min-height: 100vh;
             padding: 16px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         .app {
             max-width: 550px;
-            width: 100%;
             margin: 0 auto;
         }
 
@@ -40,19 +36,58 @@
         .header h1 { font-size: 1.6rem; }
         .header .subtitle { font-size: 0.85rem; opacity: 0.9; }
 
-        .header .nav-link {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 8px 20px;
-            background: rgba(255,255,255,0.25);
-            color: white;
-            border-radius: 12px;
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: 0.3s;
+        .visitor-box {
+            background: white;
+            border-radius: 20px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 12px rgba(201, 160, 212, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            border: 1px solid #f5e8f0;
         }
 
-        .header .nav-link:hover { background: rgba(255,255,255,0.4); }
+        .visitor-box label { font-weight: 600; color: #6b4c7a; font-size: 0.9rem; }
+        .visitor-box input {
+            flex: 1;
+            padding: 8px 14px;
+            border: 2px solid #f0e0f0;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            outline: none;
+            min-width: 120px;
+            background: #fdf8fc;
+        }
+
+        .visitor-box input:focus { border-color: #c9a0d4; }
+
+        .visitor-box .visitor-name-display {
+            font-weight: 600;
+            color: #c9a0d4;
+            font-size: 0.95rem;
+            padding: 6px 14px;
+            background: #fdf0f8;
+            border-radius: 10px;
+        }
+
+        .visitor-box button {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #e8b4d8, #c9a0d4);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 12px rgba(201, 160, 212, 0.3);
+        }
+
+        .visitor-box button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(201, 160, 212, 0.4);
+        }
 
         .card {
             background: white;
@@ -63,229 +98,129 @@
             border: 1px solid #f5e8f0;
         }
 
-        .card h2 {
-            font-size: 1rem;
-            color: #6b4c7a;
-            margin-bottom: 12px;
-        }
-
-        /* ===== AUTH ===== */
-        .auth-container {
+        .post {
             background: white;
-            border-radius: 24px;
-            padding: 40px 30px;
-            box-shadow: 0 4px 20px rgba(201, 160, 212, 0.2);
-            text-align: center;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(201, 160, 212, 0.1);
             border: 1px solid #f5e8f0;
         }
 
-        .auth-container .icon { font-size: 3.5rem; display: block; margin-bottom: 10px; }
-        .auth-container h2 { color: #6b4c7a; margin-bottom: 6px; }
-        .auth-container p { color: #b08bb8; font-size: 0.9rem; margin-bottom: 20px; }
-
-        .auth-container input {
+        .post .post-img {
             width: 100%;
-            padding: 14px;
-            border: 2px solid #f0e0f0;
-            border-radius: 14px;
-            font-size: 1rem;
-            outline: none;
-            background: #fdf8fc;
-            margin-bottom: 12px;
-        }
-
-        .auth-container input:focus { border-color: #c9a0d4; }
-
-        .auth-container .btn-auth {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #e8b4d8, #c9a0d4);
-            color: white;
-            border: none;
-            border-radius: 14px;
-            font-size: 1rem;
-            font-weight: 600;
+            height: 280px;
+            object-fit: cover;
+            background: #fdf0f5;
             cursor: pointer;
             transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(201, 160, 212, 0.3);
-            margin-top: 4px;
         }
 
-        .auth-container .btn-auth:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(201, 160, 212, 0.4);
-        }
+        .post .post-img:hover { opacity: 0.9; }
 
-        .auth-container .error-msg {
-            color: #e74c3c;
-            font-size: 0.85rem;
-            margin-top: 10px;
-            min-height: 24px;
-        }
+        .post .post-body { padding: 16px; }
 
-        .auth-container .success-msg {
-            color: #27ae60;
-            font-size: 0.85rem;
-            margin-top: 10px;
-            min-height: 24px;
-        }
+        .post .post-title { font-size: 1.1rem; font-weight: 700; color: #6b4c7a; }
+        .post .post-date { font-size: 0.8rem; color: #b08bb8; margin-top: 2px; }
+        .post .post-text { font-size: 0.95rem; color: #5a4a5a; margin-top: 8px; line-height: 1.5; }
 
-        .auth-container .switch-link {
-            display: inline-block;
-            margin-top: 16px;
-            color: #c9a0d4;
-            text-decoration: none;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .auth-container .switch-link:hover { text-decoration: underline; color: #b08bb8; }
-
-        .auth-container .nav-link {
-            display: inline-block;
-            margin-top: 16px;
-            color: #c9a0d4;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .auth-container .nav-link:hover { text-decoration: underline; color: #b08bb8; }
-
-        /* ===== ADMIN CONTENT ===== */
-        #adminContent { display: none; }
-
-        .upload-zone {
-            border: 3px dashed #f0e0f0;
-            border-radius: 16px;
-            padding: 30px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
-            background: #fdf8fc;
-        }
-
-        .upload-zone:hover {
-            border-color: #c9a0d4;
-            background: #fdf0f8;
-        }
-
-        .upload-zone .icon { font-size: 2.5rem; display: block; margin-bottom: 6px; }
-        .upload-zone .text { color: #b08bb8; font-size: 0.85rem; }
-        .upload-zone input[type="file"] { display: none; }
-
-        .input-group {
+        .post .post-actions {
             display: flex;
-            gap: 8px;
+            gap: 10px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #f5e8f0;
             flex-wrap: wrap;
-            margin-top: 10px;
         }
 
-        .input-group input,
-        .input-group textarea {
-            flex: 1;
-            padding: 10px 14px;
-            border: 2px solid #f0e0f0;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            outline: none;
-            min-width: 100px;
-            font-family: inherit;
-            background: #fdf8fc;
-        }
-
-        .input-group input:focus,
-        .input-group textarea:focus { border-color: #c9a0d4; }
-
-        .input-group textarea {
-            min-width: 100%;
-            resize: vertical;
-            min-height: 60px;
-        }
-
-        .btn-add {
-            padding: 10px;
-            background: linear-gradient(135deg, #e8b4d8, #c9a0d4);
-            color: white;
+        .post .post-actions button {
+            padding: 6px 14px;
             border: none;
-            border-radius: 12px;
-            font-weight: 600;
+            border-radius: 10px;
             cursor: pointer;
-            width: 100%;
-            margin-top: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
             transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(201, 160, 212, 0.3);
-        }
-
-        .btn-add:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(201, 160, 212, 0.4);
-        }
-
-        .admin-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 10px 0;
+            gap: 4px;
+        }
+
+        .post .post-actions .like-btn {
+            background: #fdf0f8;
+            color: #c9a0d4;
+            transition: 0.3s;
+        }
+
+        .post .post-actions .like-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .post .post-actions .like-btn.liked {
+            background: #c9a0d4;
+            color: white;
+        }
+
+        .post .post-actions .comment-btn {
+            background: #f5e8f0;
+            color: #b08bb8;
+        }
+
+        .post .post-actions .comment-btn:hover { background: #e8d4e0; }
+
+        .post .post-comments {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #f5e8f0;
+        }
+
+        .post .post-comments .comment {
+            font-size: 0.85rem;
+            color: #5a4a5a;
+            padding: 4px 0;
             border-bottom: 1px solid #f5e8f0;
         }
 
-        .admin-item:last-child { border-bottom: none; }
+        .post .post-comments .comment:last-child { border-bottom: none; }
+        .post .post-comments .comment strong { color: #6b4c7a; }
 
-        .admin-item .admin-thumb {
-            width: 50px;
-            height: 50px;
-            border-radius: 10px;
-            object-fit: cover;
-            background: #fdf0f5;
-            flex-shrink: 0;
+        .post .comment-input-group {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            flex-wrap: wrap;
         }
 
-        .admin-item .admin-info { flex: 1; }
-        .admin-item .admin-info .admin-title { font-weight: 600; color: #6b4c7a; font-size: 0.9rem; }
-        .admin-item .admin-info .admin-date { font-size: 0.75rem; color: #b08bb8; }
-
-        .admin-item .admin-delete {
-            background: none;
-            border: none;
-            color: #e8b4d8;
-            cursor: pointer;
-            font-size: 1.1rem;
-            padding: 4px 8px;
-            border-radius: 8px;
-            transition: 0.3s;
-        }
-
-        .admin-item .admin-delete:hover {
-            background: #fdf0f5;
-            color: #e74c3c;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            text-align: center;
-        }
-
-        .stats-grid .stat-item .number { font-size: 1.4rem; font-weight: 700; color: #c9a0d4; }
-        .stats-grid .stat-item .label { font-size: 0.65rem; color: #b08bb8; }
-
-        .btn-reset {
-            padding: 10px;
-            background: #fdf0f5;
-            color: #b08bb8;
+        .post .comment-input-group input[type="text"] {
+            flex: 1;
+            padding: 8px 12px;
             border: 2px solid #f0e0f0;
-            border-radius: 12px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            outline: none;
+            min-width: 120px;
+            background: #fdf8fc;
+        }
+
+        .post .comment-input-group input[type="text"]:focus { border-color: #c9a0d4; }
+
+        .post .comment-input-group button {
+            padding: 8px 14px;
+            background: linear-gradient(135deg, #e8b4d8, #c9a0d4);
+            color: white;
+            border: none;
+            border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
-            width: 100%;
-            margin-top: 8px;
+            font-size: 0.8rem;
+            white-space: nowrap;
             transition: 0.3s;
+            box-shadow: 0 4px 12px rgba(201, 160, 212, 0.3);
         }
 
-        .btn-reset:hover {
-            background: #f5e8f0;
-            border-color: #c9a0d4;
+        .post .comment-input-group button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(201, 160, 212, 0.4);
         }
 
         .empty-state {
@@ -295,21 +230,6 @@
         }
 
         .empty-state .icon { font-size: 3rem; display: block; margin-bottom: 8px; }
-
-        .btn-logout {
-            padding: 10px;
-            background: #f0d0d8;
-            color: #b05a6a;
-            border: none;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 8px;
-            transition: 0.3s;
-        }
-
-        .btn-logout:hover { background: #e8c0c8; }
 
         .loading-text {
             text-align: center;
@@ -325,29 +245,82 @@
             padding: 4px 0;
         }
 
-        .user-info {
-            display: flex;
-            justify-content: space-between;
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 1000;
+            justify-content: center;
             align-items: center;
-            padding: 8px 0;
-            color: #6b4c7a;
-            font-size: 0.85rem;
+            padding: 20px;
+            animation: fadeInLightbox 0.3s ease;
         }
 
-        .user-info .email {
-            font-weight: 600;
+        .lightbox.show { display: flex; }
+
+        @keyframes fadeInLightbox {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        .sync-status {
+        .lightbox .lightbox-img {
+            max-width: 100%;
+            max-height: 85vh;
+            border-radius: 12px;
+            object-fit: contain;
+            animation: zoomIn 0.3s ease;
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .lightbox .close-lightbox {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 2.8rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: 0.3s;
+            font-weight: 300;
+        }
+
+        .lightbox .close-lightbox:hover {
+            color: #e8b4d8;
+            transform: rotate(90deg);
+        }
+
+        .lightbox .lightbox-caption {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0;
             text-align: center;
-            font-size: 0.75rem;
-            color: #b08bb8;
-            padding: 4px 0;
+            color: white;
+            padding: 0 20px;
         }
+
+        .lightbox .lightbox-caption .lb-title { font-size: 1.1rem; font-weight: 600; }
+        .lightbox .lightbox-caption .lb-date { font-size: 0.85rem; opacity: 0.7; margin-top: 4px; }
 
         @media (max-width: 480px) {
-            .input-group { flex-direction: column; }
-            .auth-container { padding: 25px 15px; }
+            .post .post-img { height: 200px; }
+            .post .post-actions { flex-direction: column; gap: 6px; }
+            .post .post-actions button { width: 100%; justify-content: center; }
+            .lightbox .close-lightbox { font-size: 2rem; top: 12px; right: 18px; }
+            .lightbox .lightbox-caption { bottom: 16px; }
+            .visitor-box { flex-direction: column; align-items: stretch; }
+            .visitor-box input { min-width: 100%; }
+            .post .comment-input-group { flex-direction: column; }
+            .post .comment-input-group input[type="text"] { min-width: 100%; }
         }
     </style>
 </head>
@@ -355,123 +328,40 @@
 
     <div class="app">
 
-        <!-- ============================================================ -->
-        <!-- AUTH -->
-        <!-- ============================================================ -->
-        <div id="authContainer" class="auth-container">
-            <span class="icon" id="authIcon">🔐</span>
-            <h2 id="authTitle">Connexion</h2>
-            <p id="authSubtitle">Connecte-toi pour gerer les souvenirs</p>
-
-            <div id="authError" class="error-msg"></div>
-            <div id="authSuccess" class="success-msg"></div>
-
-            <input type="email" id="authEmail" placeholder="Email">
-            <input type="password" id="authPassword" placeholder="Code (6 caracteres minimum)">
-
-            <button class="btn-auth" id="authMainBtn">Se connecter</button>
-
-            <div id="authSwitchContainer">
-                <span class="switch-link" id="authSwitchLink">Creer un compte</span>
-            </div>
-
-            <a class="nav-link" href="souvenirs.html">← Aller a la Communaute</a>
+        <div class="header">
+            <h1>Communaute</h1>
+            <div class="subtitle">Les souvenirs partages</div>
         </div>
 
-        <!-- ============================================================ -->
-        <!-- ADMIN CONTENT -->
-        <!-- ============================================================ -->
-        <div id="adminContent">
+        <!-- NOM VISITEUR -->
+        <div class="visitor-box">
+            <label>Votre nom :</label>
+            <input type="text" id="visitorNameInput" placeholder="Entrez votre nom..." maxlength="30">
+            <button onclick="setVisitorName()">OK</button>
+            <span class="visitor-name-display" id="visitorNameDisplay">Visiteur</span>
+        </div>
 
-            <div class="header">
-                <h1>Admin</h1>
-                <div class="subtitle">Gerer mes souvenirs</div>
-                <div class="user-info">
-                    <span class="email" id="userEmail">user@email.com</span>
-                    <button class="btn-logout" onclick="logout()" style="width:auto; padding:6px 16px; margin:0;">Deconnexion</button>
-                </div>
-                <a class="nav-link" href="souvenirs.html">Voir la communaute →</a>
+        <!-- FEED -->
+        <div class="card">
+            <div id="communityFeed">
+                <div class="loading-text">⏳ Chargement des souvenirs...</div>
             </div>
-
-            <div class="card">
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="number" id="statTotal">0</div>
-                        <div class="label">Souvenirs</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="number" id="statLikes">0</div>
-                        <div class="label">Total J'aime</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="number" id="statComments">0</div>
-                        <div class="label">Commentaires</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>Ajouter un souvenir</h2>
-                <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
-                    <span class="icon">🖼️</span>
-                    <span class="text">Clique ici pour importer une photo</span>
-                    <span style="font-size:0.7rem; color:#d0b8d0; display:block; margin-top:4px;">JPG, PNG, GIF, WebP (max 5MB)</span>
-                    <input type="file" id="fileInput" accept="image/*">
-                </div>
-
-                <div class="input-group">
-                    <input type="text" id="souvenirTitle" placeholder="Titre du souvenir...">
-                    <input type="date" id="souvenirDate">
-                </div>
-                <div class="input-group">
-                    <textarea id="souvenirText" placeholder="Raconte ce moment..."></textarea>
-                </div>
-                <button class="btn-add" onclick="addSouvenir()">Publier le souvenir</button>
-                <div class="sync-status" id="syncStatus">✅ Synchronise</div>
-            </div>
-
-            <div class="card">
-                <h2>Mes souvenirs</h2>
-                <div id="adminList">
-                    <div class="loading-text">⏳ Chargement des souvenirs...</div>
-                </div>
-            </div>
-
-            <div class="card">
-                <button class="btn-reset" onclick="resetAll()">Supprimer tous les souvenirs</button>
-            </div>
-
+            <div class="save-status" id="saveStatus"></div>
         </div>
 
     </div>
 
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+        <button class="close-lightbox" onclick="closeLightbox(event)">✕</button>
+        <img class="lightbox-img" id="lightboxImg" src="" alt="Souvenir">
+        <div class="lightbox-caption">
+            <div class="lb-title" id="lbTitle">Titre</div>
+            <div class="lb-date" id="lbDate">Date</div>
+        </div>
+    </div>
+
     <script>
-        // ============================================================
-        // SYSTEME D'AUTHENTIFICATION SIMPLE
-        // ============================================================
-        function getAccounts() {
-            const data = localStorage.getItem('adminAccounts');
-            if (data) {
-                try {
-                    return JSON.parse(data);
-                } catch(e) {
-                    return {};
-                }
-            }
-            return {};
-        }
-
-        function saveAccounts(accounts) {
-            localStorage.setItem('adminAccounts', JSON.stringify(accounts));
-        }
-
-        // ============================================================
-        // ETAT
-        // ============================================================
-        let isLoginMode = true;
-        let currentUser = null;
-        let isSyncing = false;
-
         // ============================================================
         // CONFIGURATION JSONBin
         // ============================================================
@@ -479,46 +369,43 @@
         const API_KEY = '$2a$10$jgTIDATCdUPLr7vDJ.2AW.OkcAvXSk1g7YHQc/29qAuc8/qmPANT.';
 
         // ============================================================
+        // NOM DU VISITEUR
+        // ============================================================
+        let visitorName = localStorage.getItem('visitorName') || 'Visiteur';
+
+        function setVisitorName() {
+            const input = document.getElementById('visitorNameInput');
+            const name = input.value.trim();
+
+            if (name === '') {
+                alert('Entre ton nom !');
+                return;
+            }
+
+            visitorName = name;
+            localStorage.setItem('visitorName', name);
+            document.getElementById('visitorNameDisplay').textContent = name;
+            input.value = '';
+        }
+
+        document.getElementById('visitorNameDisplay').textContent = visitorName;
+
+        document.getElementById('visitorNameInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') setVisitorName();
+        });
+
+        // ============================================================
         // DONNEES
         // ============================================================
         let souvenirs = [];
-        let isLoading = false;
         let isSaving = false;
 
-        const DEFAULT_SOUVENIRS = [
-            {
-                id: 1,
-                image: '',
-                title: 'Vacances à la plage',
-                date: '2025-06-15',
-                text: 'Une superbe journee avec toute la famille, le soleil et la mer.',
-                likes: 5,
-                likedBy: ['Sofia', 'Emma'],
-                comments: [
-                    { user: 'Sofia', text: 'Superbe photo !' },
-                    { user: 'Emma', text: 'J aurais aime etre la' }
-                ]
-            },
-            {
-                id: 2,
-                image: '',
-                title: 'Anniversaire surprise',
-                date: '2025-03-20',
-                text: 'Mes amies ont organise une fete surprise pour mes 24 ans.',
-                likes: 8,
-                likedBy: ['Lea'],
-                comments: [
-                    { user: 'Lea', text: 'C etait magique !' }
-                ]
-            }
-        ];
-
         // ============================================================
-        // SYNC AVEC LE CLOUD
+        // CHARGER DEPUIS LE CLOUD (AUTO)
         // ============================================================
         async function loadFromCloud() {
-            if (isLoading) return;
-            isLoading = true;
+            const container = document.getElementById('communityFeed');
+            container.innerHTML = '<div class="loading-text">⏳ Chargement des souvenirs...</div>';
 
             try {
                 const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
@@ -532,35 +419,32 @@
                     if (cloudData && cloudData.length > 0) {
                         souvenirs = cloudData;
                         saveLocal();
-                        renderAdmin();
+                        renderCommunity();
                         console.log('✅ Donnees chargees depuis le cloud');
                         return;
                     }
                 }
 
-                // Si pas de donnees, charger les defauts
-                if (souvenirs.length === 0) {
-                    souvenirs = JSON.parse(JSON.stringify(DEFAULT_SOUVENIRS));
-                    saveLocal();
-                    renderAdmin();
-                    await saveToCloud();
-                }
+                // Aucune donnee
+                souvenirs = [];
+                saveLocal();
+                renderCommunity();
 
             } catch(e) {
                 console.error('Erreur chargement:', e);
-                if (souvenirs.length === 0) {
-                    souvenirs = JSON.parse(JSON.stringify(DEFAULT_SOUVENIRS));
-                    saveLocal();
-                    renderAdmin();
-                }
+                loadLocal();
             }
-
-            isLoading = false;
         }
 
+        // ============================================================
+        // SAUVEGARDER SUR LE CLOUD (AUTO)
+        // ============================================================
         async function saveToCloud() {
             if (isSaving) return;
             isSaving = true;
+
+            const status = document.getElementById('saveStatus');
+            status.textContent = '⏳ Sauvegarde...';
 
             try {
                 const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
@@ -574,17 +458,15 @@
 
                 if (response.ok) {
                     console.log('✅ Sauvegarde cloud reussie');
-                    document.getElementById('syncStatus').textContent = '✅ Synchronise';
-                    setTimeout(() => {
-                        document.getElementById('syncStatus').textContent = '✅ Synchronise';
-                    }, 1000);
+                    status.textContent = '✅ Sauvegarde ok';
+                    setTimeout(() => { status.textContent = ''; }, 2000);
                 } else {
                     console.error('Erreur sauvegarde:', await response.text());
-                    document.getElementById('syncStatus').textContent = '❌ Erreur sync';
+                    status.textContent = '❌ Erreur sauvegarde';
                 }
             } catch(e) {
                 console.error('Erreur sauvegarde:', e);
-                document.getElementById('syncStatus').textContent = '❌ Erreur sync';
+                status.textContent = '❌ Erreur sauvegarde';
             }
 
             isSaving = false;
@@ -597,361 +479,182 @@
             localStorage.setItem('souvenirsAlbum', JSON.stringify(souvenirs));
         }
 
-        function mergeData(defaults, userData) {
-            const result = [];
-            const userMap = {};
-            userData.forEach(s => { userMap[s.id] = s; });
-
-            defaults.forEach(def => {
-                if (userMap[def.id]) {
-                    result.push(userMap[def.id]);
-                    delete userMap[def.id];
-                } else {
-                    result.push(JSON.parse(JSON.stringify(def)));
-                }
-            });
-
-            Object.values(userMap).forEach(s => {
-                if (s.id > 2) result.push(s);
-            });
-
-            return result;
-        }
-
-        function loadData() {
+        function loadLocal() {
             const saved = localStorage.getItem('souvenirsAlbum');
             if (saved) {
                 try {
-                    const parsed = JSON.parse(saved);
-                    souvenirs = mergeData(DEFAULT_SOUVENIRS, parsed);
+                    souvenirs = JSON.parse(saved);
                 } catch(e) {
-                    souvenirs = JSON.parse(JSON.stringify(DEFAULT_SOUVENIRS));
+                    souvenirs = [];
                 }
             } else {
-                souvenirs = JSON.parse(JSON.stringify(DEFAULT_SOUVENIRS));
+                souvenirs = [];
             }
-            saveLocal();
-            renderAdmin();
+            renderCommunity();
         }
 
         // ============================================================
-        // ATTACHER LES EVENEMENTS
+        // LIKE UNIQUE
         // ============================================================
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('authMainBtn').addEventListener('click', handleAuth);
-            document.getElementById('authSwitchLink').addEventListener('click', toggleAuthMode);
+        async function toggleLike(id) {
+            const s = souvenirs.find(s => s.id === id);
+            if (!s) return;
 
-            document.getElementById('authEmail').addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') document.getElementById('authPassword').focus();
-            });
+            if (!s.likedBy) s.likedBy = [];
 
-            document.getElementById('authPassword').addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') handleAuth();
-            });
+            const hasLiked = s.likedBy.includes(visitorName);
 
-            checkSession();
-        });
-
-        // ============================================================
-        // VERIFIER LA SESSION
-        // ============================================================
-        function checkSession() {
-            const savedUser = localStorage.getItem('adminCurrentUser');
-            if (savedUser) {
-                try {
-                    const user = JSON.parse(savedUser);
-                    const accounts = getAccounts();
-                    if (accounts[user.email] && accounts[user.email].password === user.password) {
-                        currentUser = user;
-                        showAdmin();
-                        return;
-                    }
-                } catch(e) {}
-            }
-            showAuth();
-        }
-
-        function showAdmin() {
-            document.getElementById('authContainer').style.display = 'none';
-            document.getElementById('adminContent').style.display = 'block';
-            document.getElementById('userEmail').textContent = currentUser.email;
-            // Charger depuis le cloud automatiquement
-            loadFromCloud();
-            // Recharger toutes les 30 secondes
-            setInterval(() => {
-                loadFromCloud();
-            }, 30000);
-        }
-
-        function showAuth() {
-            document.getElementById('authContainer').style.display = 'block';
-            document.getElementById('adminContent').style.display = 'none';
-        }
-
-        // ============================================================
-        // TOGGLE MODE
-        // ============================================================
-        function toggleAuthMode() {
-            isLoginMode = !isLoginMode;
-            const icon = document.getElementById('authIcon');
-            const title = document.getElementById('authTitle');
-            const subtitle = document.getElementById('authSubtitle');
-            const btn = document.getElementById('authMainBtn');
-            const switchLink = document.getElementById('authSwitchLink');
-
-            if (isLoginMode) {
-                icon.textContent = '🔐';
-                title.textContent = 'Connexion';
-                subtitle.textContent = 'Connecte-toi pour gerer les souvenirs';
-                btn.textContent = 'Se connecter';
-                switchLink.textContent = 'Creer un compte';
+            if (hasLiked) {
+                s.likedBy = s.likedBy.filter(name => name !== visitorName);
+                s.likes = (s.likes || 0) - 1;
             } else {
-                icon.textContent = '📝';
-                title.textContent = 'Creer un compte';
-                subtitle.textContent = 'Cree ton compte admin';
-                btn.textContent = 'Creer le compte';
-                switchLink.textContent = 'Deja un compte ? Se connecter';
+                s.likedBy.push(visitorName);
+                s.likes = (s.likes || 0) + 1;
             }
-
-            document.getElementById('authError').textContent = '';
-            document.getElementById('authSuccess').textContent = '';
-        }
-
-        // ============================================================
-        // AUTH
-        // ============================================================
-        function handleAuth() {
-            const email = document.getElementById('authEmail').value.trim();
-            const password = document.getElementById('authPassword').value.trim();
-            const errorEl = document.getElementById('authError');
-            const successEl = document.getElementById('authSuccess');
-
-            errorEl.textContent = '';
-            successEl.textContent = '';
-
-            if (!email || !password) {
-                errorEl.textContent = '❌ Remplis tous les champs';
-                return;
-            }
-
-            if (password.length < 6) {
-                errorEl.textContent = '❌ Le code doit avoir au moins 6 caracteres';
-                return;
-            }
-
-            const accounts = getAccounts();
-
-            if (isLoginMode) {
-                if (accounts[email] && accounts[email].password === password) {
-                    successEl.textContent = '✅ Connexion reussie !';
-                    currentUser = { email: email, password: password };
-                    localStorage.setItem('adminCurrentUser', JSON.stringify(currentUser));
-                    showAdmin();
-                } else if (accounts[email]) {
-                    errorEl.textContent = '❌ Code incorrect.';
-                } else {
-                    errorEl.textContent = '❌ Aucun compte trouve. Cree un compte.';
-                }
-            } else {
-                if (accounts[email]) {
-                    errorEl.textContent = '❌ Cet email est deja utilise.';
-                } else {
-                    accounts[email] = { email: email, password: password, created: new Date().toISOString() };
-                    saveAccounts(accounts);
-                    successEl.textContent = '✅ Compte cree ! Connecte-toi maintenant.';
-                    isLoginMode = true;
-                    toggleAuthMode();
-                    document.getElementById('authEmail').value = email;
-                    document.getElementById('authPassword').value = '';
-                }
-            }
-        }
-
-        // ============================================================
-        // DECONNEXION
-        // ============================================================
-        function logout() {
-            localStorage.removeItem('adminCurrentUser');
-            currentUser = null;
-            showAuth();
-        }
-
-        // ============================================================
-        // AJOUTER - AUTO SYNC
-        // ============================================================
-        let pendingImage = null;
-
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            if (!file.type.startsWith('image/')) {
-                alert('Le fichier n\'est pas une image.');
-                this.value = '';
-                return;
-            }
-
-            if (file.size > 5 * 1024 * 1024) {
-                alert('L\'image est trop volumineuse (max 5MB).');
-                this.value = '';
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                pendingImage = event.target.result;
-                document.querySelector('.upload-zone .text').textContent = '✅ ' + file.name + ' chargee !';
-                document.querySelector('.upload-zone .icon').textContent = '✅';
-            };
-            reader.readAsDataURL(file);
-        });
-
-        async function addSouvenir() {
-            const title = document.getElementById('souvenirTitle').value.trim();
-            const date = document.getElementById('souvenirDate').value;
-            const text = document.getElementById('souvenirText').value.trim();
-
-            if (!pendingImage) {
-                alert('Importe d\'abord une photo !');
-                return;
-            }
-
-            if (title === '') {
-                alert('Donne un titre a ce souvenir !');
-                return;
-            }
-
-            const maxId = souvenirs.reduce((max, s) => s.id > max ? s.id : max, 0);
-            souvenirs.push({
-                id: maxId + 1,
-                image: pendingImage,
-                title: title,
-                date: date || new Date().toISOString().split('T')[0],
-                text: text || 'Aucune description',
-                likes: 0,
-                likedBy: [],
-                comments: []
-            });
-
-            pendingImage = null;
-            document.getElementById('souvenirTitle').value = '';
-            document.getElementById('souvenirText').value = '';
-            document.getElementById('souvenirDate').value = '';
-            document.getElementById('fileInput').value = '';
-            document.querySelector('.upload-zone .text').textContent = 'Clique ici pour importer une photo';
-            document.querySelector('.upload-zone .icon').textContent = '🖼️';
 
             saveLocal();
-            renderAdmin();
-            document.getElementById('syncStatus').textContent = '⏳ Synchronisation...';
+            renderCommunity();
             await saveToCloud();
         }
 
         // ============================================================
-        // SUPPRIMER - AUTO SYNC
+        // COMMENTER (AUTO SAVE)
         // ============================================================
-        async function deleteSouvenir(id) {
-            if (confirm('Supprimer ce souvenir ?')) {
-                souvenirs = souvenirs.filter(s => s.id !== id);
-                saveLocal();
-                renderAdmin();
-                document.getElementById('syncStatus').textContent = '⏳ Synchronisation...';
-                await saveToCloud();
-            }
-        }
+        async function addComment(id) {
+            const input = document.getElementById('commentInput_' + id);
+            const text = input.value.trim();
 
-        // ============================================================
-        // REINITIALISER
-        // ============================================================
-        async function resetAll() {
-            if (souvenirs.length === 0) {
-                alert('Aucun souvenir a supprimer.');
+            if (text === '') {
+                alert('Ecris un commentaire !');
                 return;
             }
 
-            if (confirm('Supprimer tous les souvenirs ? Cette action est irreversible.')) {
-                souvenirs = JSON.parse(JSON.stringify(DEFAULT_SOUVENIRS));
+            const name = visitorName || 'Visiteur';
+
+            const s = souvenirs.find(s => s.id === id);
+            if (s) {
+                if (!s.comments) s.comments = [];
+                s.comments.push({ user: name, text: text });
                 saveLocal();
-                renderAdmin();
-                document.getElementById('syncStatus').textContent = '⏳ Synchronisation...';
+                renderCommunity();
+                input.value = '';
                 await saveToCloud();
             }
         }
 
         // ============================================================
-        // RENDER ADMIN
+        // TOGGLE COMMENTS
         // ============================================================
-        function renderAdmin() {
-            const container = document.getElementById('adminList');
+        function toggleComments(id) {
+            const div = document.getElementById('comments_' + id);
+            if (div.style.display === 'none') {
+                div.style.display = 'block';
+            } else {
+                div.style.display = 'none';
+            }
+        }
 
-            document.getElementById('statTotal').textContent = souvenirs.length;
-            const totalLikes = souvenirs.reduce((sum, s) => sum + (s.likes || 0), 0);
-            document.getElementById('statLikes').textContent = totalLikes;
-            const totalComments = souvenirs.reduce((sum, s) => sum + (s.comments ? s.comments.length : 0), 0);
-            document.getElementById('statComments').textContent = totalComments;
+        // ============================================================
+        // LIGHTBOX
+        // ============================================================
+        function openLightbox(imageSrc, title, date) {
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightboxImg');
+            const titleEl = document.getElementById('lbTitle');
+            const dateEl = document.getElementById('lbDate');
+
+            img.src = imageSrc;
+            titleEl.textContent = title || 'Sans titre';
+            dateEl.textContent = date || 'Date inconnue';
+
+            lightbox.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('lightbox').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeLightbox(e);
+        });
+
+        // ============================================================
+        // RENDER COMMUNITY
+        // ============================================================
+        function renderCommunity() {
+            const container = document.getElementById('communityFeed');
 
             if (souvenirs.length === 0) {
-                container.innerHTML = '<div class="empty-state"><span class="icon">📸</span><p>Aucun souvenir</p></div>';
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <span class="icon">📸</span>
+                        <p>Aucun souvenir</p>
+                        <p style="font-size:0.8rem;">Les souvenirs apparaitront ici</p>
+                    </div>
+                `;
                 return;
             }
 
             const sorted = [...souvenirs].reverse();
 
-            container.innerHTML = sorted.map(s => `
-                <div class="admin-item">
-                    ${s.image ? `<img class="admin-thumb" src="${s.image}" alt="${s.title}">` : '<div class="admin-thumb" style="display:flex;align-items:center;justify-content:center;font-size:1.5rem;">📸</div>'}
-                    <div class="admin-info">
-                        <div class="admin-title">${s.title}</div>
-                        <div class="admin-date">${s.date} - ❤️ ${s.likes || 0} - 💬 ${s.comments ? s.comments.length : 0}</div>
+            container.innerHTML = sorted.map(s => {
+                const hasLiked = s.likedBy && s.likedBy.includes(visitorName);
+                const likeClass = hasLiked ? 'liked' : '';
+                const likeIcon = hasLiked ? '❤️' : '🤍';
+
+                return `
+                <div class="post">
+                    ${s.image ? `<img class="post-img" src="${s.image}" alt="${s.title}" onclick="openLightbox('${s.image}', '${s.title}', '${s.date}')">` : ''}
+                    <div class="post-body">
+                        <div class="post-title">${s.title}</div>
+                        <div class="post-date">📅 ${s.date}</div>
+                        <div class="post-text">${s.text}</div>
+
+                        <div class="post-actions">
+                            <button class="like-btn ${likeClass}" onclick="toggleLike(${s.id})">${likeIcon} ${s.likes || 0}</button>
+                            <button class="comment-btn" onclick="toggleComments(${s.id})">💬 ${s.comments ? s.comments.length : 0}</button>
+                        </div>
+
+                        <div class="post-comments" id="comments_${s.id}" style="display:none;">
+                            ${s.comments && s.comments.length > 0 ? s.comments.map(c => `
+                                <div class="comment"><strong>${c.user}</strong> : ${c.text}</div>
+                            `).join('') : '<div style="color:#b08bb8; font-size:0.8rem; padding:4px 0;">Aucun commentaire</div>'}
+                            <div class="comment-input-group">
+                                <input type="text" id="commentInput_${s.id}" placeholder="Ecrire un commentaire...">
+                                <button onclick="addComment(${s.id})">Envoyer</button>
+                            </div>
+                        </div>
                     </div>
-                    <button class="admin-delete" onclick="deleteSouvenir(${s.id})">✕</button>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         // ============================================================
-        // INIT
+        // STORAGE
         // ============================================================
-        const today = new Date();
-        document.getElementById('souvenirDate').value = today.toISOString().split('T')[0];
-
-        document.getElementById('souvenirTitle').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') document.getElementById('souvenirText').focus();
-        });
-
-        document.getElementById('souvenirText').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && e.shiftKey) {
-                addSouvenir();
-                e.preventDefault();
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'souvenirsAlbum') {
+                souvenirs = JSON.parse(e.newValue) || [];
+                renderCommunity();
             }
         });
 
-        // Drag & Drop
-        const uploadZone = document.getElementById('uploadZone');
-        uploadZone.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            this.style.borderColor = '#c9a0d4';
-            this.style.background = '#fdf0f8';
-        });
-        uploadZone.addEventListener('dragleave', function(e) {
-            e.preventDefault();
-            this.style.borderColor = '#f0e0f0';
-            this.style.background = '#fdf8fc';
-        });
-        uploadZone.addEventListener('drop', function(e) {
-            e.preventDefault();
-            this.style.borderColor = '#f0e0f0';
-            this.style.background = '#fdf8fc';
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                const input = document.getElementById('fileInput');
-                input.files = files;
-                input.dispatchEvent(new Event('change'));
-            }
-        });
+        // ============================================================
+        // INIT - CHARGEMENT AUTO
+        // ============================================================
+        loadFromCloud();
 
-        console.log('✅ Admin - Mes Souvenirs prete !');
-        console.log('🔄 Synchronisation automatique activee');
+        // Recharger toutes les 30 secondes
+        setInterval(() => {
+            loadFromCloud();
+        }, 30000);
+
+        console.log('✅ Communaute - Mes Souvenirs prete !');
+        console.log('👤 Visiteur:', visitorName);
+        console.log('❤️ Like unique par utilisateur active');
     </script>
 
 </body>
