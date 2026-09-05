@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Mes Souvenirs</title>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
         * {
             margin: 0;
@@ -69,7 +73,8 @@
             margin-bottom: 12px;
         }
 
-        .login-container {
+        /* ===== AUTH ===== */
+        .auth-container {
             background: white;
             border-radius: 24px;
             padding: 40px 30px;
@@ -78,25 +83,24 @@
             border: 1px solid #f5e8f0;
         }
 
-        .login-container .lock-icon { font-size: 3.5rem; display: block; margin-bottom: 10px; }
-        .login-container h2 { color: #6b4c7a; margin-bottom: 6px; }
-        .login-container p { color: #b08bb8; font-size: 0.9rem; margin-bottom: 20px; }
+        .auth-container .icon { font-size: 3.5rem; display: block; margin-bottom: 10px; }
+        .auth-container h2 { color: #6b4c7a; margin-bottom: 6px; }
+        .auth-container p { color: #b08bb8; font-size: 0.9rem; margin-bottom: 20px; }
 
-        .login-container input {
+        .auth-container input {
             width: 100%;
             padding: 14px;
             border: 2px solid #f0e0f0;
             border-radius: 14px;
-            font-size: 1.1rem;
-            text-align: center;
+            font-size: 1rem;
             outline: none;
-            letter-spacing: 4px;
             background: #fdf8fc;
+            margin-bottom: 12px;
         }
 
-        .login-container input:focus { border-color: #c9a0d4; }
+        .auth-container input:focus { border-color: #c9a0d4; }
 
-        .login-container .btn-login {
+        .auth-container .btn-auth {
             width: 100%;
             padding: 14px;
             background: linear-gradient(135deg, #e8b4d8, #c9a0d4);
@@ -106,24 +110,65 @@
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 12px;
             transition: 0.3s;
             box-shadow: 0 4px 15px rgba(201, 160, 212, 0.3);
+            margin-top: 4px;
         }
 
-        .login-container .btn-login:hover {
+        .auth-container .btn-auth:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(201, 160, 212, 0.4);
         }
 
-        .login-container .error-msg {
+        .auth-container .btn-auth-secondary {
+            background: none;
+            color: #c9a0d4;
+            box-shadow: none;
+            border: 2px solid #f0e0f0;
+        }
+
+        .auth-container .btn-auth-secondary:hover {
+            background: #fdf0f8;
+            transform: translateY(-2px);
+        }
+
+        .auth-container .error-msg {
             color: #e74c3c;
             font-size: 0.85rem;
             margin-top: 10px;
             min-height: 24px;
         }
 
-        .login-container .nav-link {
+        .auth-container .success-msg {
+            color: #27ae60;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            min-height: 24px;
+        }
+
+        .auth-container .switch-link {
+            display: inline-block;
+            margin-top: 16px;
+            color: #c9a0d4;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .auth-container .switch-link:hover { text-decoration: underline; color: #b08bb8; }
+
+        .auth-container .forgot-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #b08bb8;
+            text-decoration: none;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .auth-container .forgot-link:hover { text-decoration: underline; }
+
+        .auth-container .nav-link {
             display: inline-block;
             margin-top: 16px;
             color: #c9a0d4;
@@ -131,8 +176,9 @@
             font-weight: 600;
         }
 
-        .login-container .nav-link:hover { text-decoration: underline; color: #b08bb8; }
+        .auth-container .nav-link:hover { text-decoration: underline; color: #b08bb8; }
 
+        /* ===== ADMIN CONTENT ===== */
         #adminContent { display: none; }
 
         .upload-zone {
@@ -292,6 +338,21 @@
 
         .btn-logout:hover { background: #e8c0c8; }
 
+        .btn-sync {
+            padding: 10px;
+            background: #a8d5ba;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 8px;
+            transition: 0.3s;
+        }
+
+        .btn-sync:hover { background: #8cc4a0; }
+
         .loading-text {
             text-align: center;
             color: #b08bb8;
@@ -299,8 +360,29 @@
             font-size: 0.9rem;
         }
 
+        .save-status {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #888;
+            padding: 4px 0;
+        }
+
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            color: #6b4c7a;
+            font-size: 0.85rem;
+        }
+
+        .user-info .email {
+            font-weight: 600;
+        }
+
         @media (max-width: 480px) {
             .input-group { flex-direction: column; }
+            .auth-container { padding: 25px 15px; }
         }
     </style>
 </head>
@@ -308,28 +390,48 @@
 
     <div class="app">
 
-        <!-- LOGIN -->
-        <div id="loginContainer" class="login-container">
-            <span class="lock-icon">🔒</span>
-            <h2>Acces Admin</h2>
-            <p>Entre le code secret pour gerer les souvenirs</p>
-            <input type="password" id="passwordInput" placeholder="Code" maxlength="10">
-            <button class="btn-login" onclick="checkPassword()">Acceder</button>
-            <div class="error-msg" id="errorMsg"></div>
+        <!-- ============================================================ -->
+        <!-- AUTH -->
+        <!-- ============================================================ -->
+        <div id="authContainer" class="auth-container">
+            <span class="icon" id="authIcon">🔐</span>
+            <h2 id="authTitle">Connexion</h2>
+            <p id="authSubtitle">Connecte-toi pour gerer les souvenirs</p>
+
+            <div id="authError" class="error-msg"></div>
+            <div id="authSuccess" class="success-msg"></div>
+
+            <input type="email" id="authEmail" placeholder="Email">
+            <input type="password" id="authPassword" placeholder="Code (6 caracteres minimum)">
+
+            <button class="btn-auth" id="authMainBtn" onclick="handleAuth()">Se connecter</button>
+
+            <div id="authSwitchContainer">
+                <span class="switch-link" id="authSwitchLink" onclick="toggleAuthMode()">Creer un compte</span>
+            </div>
+
+            <div id="forgotContainer">
+                <span class="forgot-link" onclick="resetPassword()">Code oublie ?</span>
+            </div>
+
             <a class="nav-link" href="souvenirs.html">← Aller a la Communaute</a>
         </div>
 
+        <!-- ============================================================ -->
         <!-- ADMIN CONTENT -->
+        <!-- ============================================================ -->
         <div id="adminContent">
 
             <div class="header">
                 <h1>Admin</h1>
                 <div class="subtitle">Gerer mes souvenirs</div>
+                <div class="user-info">
+                    <span class="email" id="userEmail">user@email.com</span>
+                    <button class="btn-logout" onclick="logout()" style="width:auto; padding:6px 16px; margin:0;">Deconnexion</button>
+                </div>
                 <a class="nav-link" href="souvenirs.html">Voir la communaute →</a>
-                <button class="btn-logout" onclick="logout()">Se deconnecter</button>
             </div>
 
-            <!-- STATS -->
             <div class="card">
                 <div class="stats-grid">
                     <div class="stat-item">
@@ -347,7 +449,6 @@
                 </div>
             </div>
 
-            <!-- AJOUTER -->
             <div class="card">
                 <h2>Ajouter un souvenir</h2>
                 <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
@@ -368,7 +469,6 @@
                 <div id="saveStatus" style="text-align:center; margin-top:8px; font-size:0.85rem; color:#888;"></div>
             </div>
 
-            <!-- LISTE -->
             <div class="card">
                 <h2>Mes souvenirs</h2>
                 <div id="adminList">
@@ -376,8 +476,9 @@
                 </div>
             </div>
 
-            <!-- ACTIONS -->
             <div class="card">
+                <button class="btn-sync" onclick="syncToCloud()">☁️ Sauvegarder en ligne</button>
+                <button class="btn-sync" onclick="loadFromCloud()" style="background:#b8a0c8;">⬇️ Charger depuis le cloud</button>
                 <button class="btn-reset" onclick="resetAll()">Supprimer tous les souvenirs</button>
             </div>
 
@@ -387,19 +488,192 @@
 
     <script>
         // ============================================================
+        // CONFIGURATION SUPABASE - TES INFOS
+        // ============================================================
+        const SUPABASE_URL = 'https://japbmtieghdsodivzssq.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcGJtdGllZ2hkc29kaXZ6c3NxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg2MjAxNTIsImV4cCI6MjEwNDE5NjE1Mn0.IuYN9Y6TKUWJSpwgh-S68QA8zKXBMzaTYQAQLJo2T2c';
+
+        // Initialiser Supabase
+        const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // ============================================================
         // CONFIGURATION JSONBin
         // ============================================================
         const BIN_ID = '6a9c3abbf5f4af5e296e72d0';
         const API_KEY = '$2a$10$jgTIDATCdUPLr7vDJ.2AW.OkcAvXSk1g7YHQc/29qAuc8/qmPANT.';
 
         // ============================================================
-        // CODE SECRET
+        // ETAT
         // ============================================================
-        const SECRET_CODE = '1234';
+        let isLoginMode = true;
+        let currentUser = null;
 
         // ============================================================
-        // DONNEES PAR DEFAUT
+        // VERIFIER LA SESSION
         // ============================================================
+        async function checkSession() {
+            const { data: { session }, error } = await supabase.auth.getSession();
+
+            if (session) {
+                currentUser = session.user;
+                showAdmin();
+            } else {
+                showAuth();
+            }
+        }
+
+        function showAdmin() {
+            document.getElementById('authContainer').style.display = 'none';
+            document.getElementById('adminContent').style.display = 'block';
+            document.getElementById('userEmail').textContent = currentUser.email;
+            loadData();
+        }
+
+        function showAuth() {
+            document.getElementById('authContainer').style.display = 'block';
+            document.getElementById('adminContent').style.display = 'none';
+        }
+
+        // ============================================================
+        // TOGGLE MODE
+        // ============================================================
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            const icon = document.getElementById('authIcon');
+            const title = document.getElementById('authTitle');
+            const subtitle = document.getElementById('authSubtitle');
+            const btn = document.getElementById('authMainBtn');
+            const switchLink = document.getElementById('authSwitchLink');
+            const forgotContainer = document.getElementById('forgotContainer');
+
+            if (isLoginMode) {
+                icon.textContent = '🔐';
+                title.textContent = 'Connexion';
+                subtitle.textContent = 'Connecte-toi pour gerer les souvenirs';
+                btn.textContent = 'Se connecter';
+                switchLink.textContent = 'Creer un compte';
+                forgotContainer.style.display = 'block';
+            } else {
+                icon.textContent = '📝';
+                title.textContent = 'Creer un compte';
+                subtitle.textContent = 'Cree ton compte admin';
+                btn.textContent = 'Creer le compte';
+                switchLink.textContent = 'Deja un compte ? Se connecter';
+                forgotContainer.style.display = 'none';
+            }
+
+            document.getElementById('authError').textContent = '';
+            document.getElementById('authSuccess').textContent = '';
+        }
+
+        // ============================================================
+        // AUTH
+        // ============================================================
+        async function handleAuth() {
+            const email = document.getElementById('authEmail').value.trim();
+            const password = document.getElementById('authPassword').value.trim();
+            const errorEl = document.getElementById('authError');
+            const successEl = document.getElementById('authSuccess');
+
+            errorEl.textContent = '';
+            successEl.textContent = '';
+
+            if (!email || !password) {
+                errorEl.textContent = '❌ Remplis tous les champs';
+                return;
+            }
+
+            if (password.length < 6) {
+                errorEl.textContent = '❌ Le code doit avoir au moins 6 caracteres';
+                return;
+            }
+
+            if (isLoginMode) {
+                // CONNEXION
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+                if (error) {
+                    if (error.message.includes('Invalid login credentials')) {
+                        errorEl.textContent = '❌ Email ou code incorrect.';
+                    } else {
+                        errorEl.textContent = '❌ ' + error.message;
+                    }
+                } else {
+                    successEl.textContent = '✅ Connexion reussie !';
+                    currentUser = data.user;
+                    showAdmin();
+                }
+            } else {
+                // CREATION DE COMPTE
+                const { data, error } = await supabase.auth.signUp({
+                    email: email,
+                    password: password
+                });
+
+                if (error) {
+                    if (error.message.includes('already registered')) {
+                        errorEl.textContent = '❌ Cet email est deja utilise. Connecte-toi.';
+                    } else {
+                        errorEl.textContent = '❌ ' + error.message;
+                    }
+                } else {
+                    successEl.textContent = '✅ Compte cree ! Connecte-toi maintenant.';
+                    isLoginMode = true;
+                    toggleAuthMode();
+                    document.getElementById('authEmail').value = email;
+                    document.getElementById('authPassword').value = '';
+                }
+            }
+        }
+
+        // ============================================================
+        // REINITIALISER LE CODE
+        // ============================================================
+        async function resetPassword() {
+            const email = document.getElementById('authEmail').value.trim();
+            const errorEl = document.getElementById('authError');
+            const successEl = document.getElementById('authSuccess');
+
+            errorEl.textContent = '';
+            successEl.textContent = '';
+
+            if (!email) {
+                errorEl.textContent = '❌ Entre ton email pour recevoir le code';
+                return;
+            }
+
+            const { error } = await supabase.auth.resetPasswordForEmail(email);
+
+            if (error) {
+                if (error.message.includes('not found')) {
+                    errorEl.textContent = '❌ Aucun compte trouve avec cet email.';
+                } else {
+                    errorEl.textContent = '❌ ' + error.message;
+                }
+            } else {
+                successEl.textContent = '✅ Un email avec les instructions a ete envoye !';
+            }
+        }
+
+        // ============================================================
+        // DECONNEXION
+        // ============================================================
+        async function logout() {
+            await supabase.auth.signOut();
+            currentUser = null;
+            showAuth();
+        }
+
+        // ============================================================
+        // DONNEES
+        // ============================================================
+        let souvenirs = [];
+        let isLoading = false;
+        let isSaving = false;
+
         const DEFAULT_SOUVENIRS = [
             {
                 id: 1,
@@ -408,6 +682,7 @@
                 date: '2025-06-15',
                 text: 'Une superbe journee avec toute la famille, le soleil et la mer.',
                 likes: 5,
+                likedBy: ['Sofia', 'Emma'],
                 comments: [
                     { user: 'Sofia', text: 'Superbe photo !' },
                     { user: 'Emma', text: 'J aurais aime etre la' }
@@ -420,6 +695,7 @@
                 date: '2025-03-20',
                 text: 'Mes amies ont organise une fete surprise pour mes 24 ans.',
                 likes: 8,
+                likedBy: ['Lea'],
                 comments: [
                     { user: 'Lea', text: 'C etait magique !' }
                 ]
@@ -427,14 +703,51 @@
         ];
 
         // ============================================================
-        // ETAT
+        // CHARGER LES DONNEES
         // ============================================================
-        let souvenirs = [];
-        let isLoading = false;
-        let isSaving = false;
+        function loadData() {
+            const saved = localStorage.getItem('souvenirsAlbum');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    souvenirs = mergeData(DEFAULT_SOUVENIRS, parsed);
+                } catch(e) {
+                    souvenirs = JSON.parse(JSON.stringify(DEFAULT_SOUVENIRS));
+                }
+            } else {
+                souvenirs = JSON.parse(JSON.stringify(DEFAULT_SOUVENIRS));
+            }
+            saveLocal();
+            renderAdmin();
+        }
+
+        function mergeData(defaults, userData) {
+            const result = [];
+            const userMap = {};
+            userData.forEach(s => { userMap[s.id] = s; });
+
+            defaults.forEach(def => {
+                if (userMap[def.id]) {
+                    result.push(userMap[def.id]);
+                    delete userMap[def.id];
+                } else {
+                    result.push(JSON.parse(JSON.stringify(def)));
+                }
+            });
+
+            Object.values(userMap).forEach(s => {
+                if (s.id > 2) result.push(s);
+            });
+
+            return result;
+        }
+
+        function saveLocal() {
+            localStorage.setItem('souvenirsAlbum', JSON.stringify(souvenirs));
+        }
 
         // ============================================================
-        // CHARGER DEPUIS LE CLOUD (AUTO)
+        // SYNC AVEC LE CLOUD
         // ============================================================
         async function loadFromCloud() {
             if (isLoading) return;
@@ -454,16 +767,15 @@
                         saveLocal();
                         renderAdmin();
                         console.log('✅ Donnees chargees depuis le cloud');
+                        alert('✅ Donnees chargees depuis le cloud !');
                         return;
                     }
                 }
 
-                // Si pas de donnees ou erreur, charger les defauts
                 if (souvenirs.length === 0) {
                     souvenirs = JSON.parse(JSON.stringify(DEFAULT_SOUVENIRS));
                     saveLocal();
                     renderAdmin();
-                    // Sauvegarder les defauts sur le cloud
                     await saveToCloud();
                 }
 
@@ -479,9 +791,6 @@
             isLoading = false;
         }
 
-        // ============================================================
-        // SAUVEGARDER SUR LE CLOUD (AUTO)
-        // ============================================================
         async function saveToCloud() {
             if (isSaving) return;
             isSaving = true;
@@ -515,70 +824,7 @@
         }
 
         // ============================================================
-        // SAUVEGARDE LOCALE
-        // ============================================================
-        function saveLocal() {
-            localStorage.setItem('souvenirsAlbum', JSON.stringify(souvenirs));
-        }
-
-        // ============================================================
-        // FUSION DES DONNEES
-        // ============================================================
-        function mergeData(defaults, userData) {
-            const result = [];
-            const userMap = {};
-            userData.forEach(s => { userMap[s.id] = s; });
-
-            defaults.forEach(def => {
-                if (userMap[def.id]) {
-                    result.push(userMap[def.id]);
-                    delete userMap[def.id];
-                } else {
-                    result.push(JSON.parse(JSON.stringify(def)));
-                }
-            });
-
-            Object.values(userMap).forEach(s => {
-                if (s.id > 2) result.push(s);
-            });
-
-            return result;
-        }
-
-        // ============================================================
-        // LOGIN
-        // ============================================================
-        function checkPassword() {
-            const input = document.getElementById('passwordInput');
-            const error = document.getElementById('errorMsg');
-            const code = input.value.trim();
-
-            if (code === SECRET_CODE) {
-                document.getElementById('loginContainer').style.display = 'none';
-                document.getElementById('adminContent').style.display = 'block';
-                error.textContent = '';
-                input.value = '';
-                // Charger les donnees automatiquement
-                loadFromCloud();
-            } else {
-                error.textContent = '❌ Code incorrect. Essaye encore.';
-                input.value = '';
-                input.focus();
-            }
-        }
-
-        function logout() {
-            document.getElementById('loginContainer').style.display = 'block';
-            document.getElementById('adminContent').style.display = 'none';
-            document.getElementById('passwordInput').value = '';
-        }
-
-        document.getElementById('passwordInput').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') checkPassword();
-        });
-
-        // ============================================================
-        // AJOUTER UN SOUVENIR (AUTO SAVE)
+        // AJOUTER
         // ============================================================
         let pendingImage = null;
 
@@ -630,6 +876,7 @@
                 date: date || new Date().toISOString().split('T')[0],
                 text: text || 'Aucune description',
                 likes: 0,
+                likedBy: [],
                 comments: []
             });
 
@@ -643,18 +890,33 @@
 
             saveLocal();
             renderAdmin();
-
-            // Sauvegarde auto sur le cloud
             document.getElementById('saveStatus').textContent = '⏳ Sauvegarde en cours...';
             await saveToCloud();
         }
 
         // ============================================================
-        // SUPPRIMER (AUTO SAVE)
+        // SUPPRIMER
         // ============================================================
         async function deleteSouvenir(id) {
             if (confirm('Supprimer ce souvenir ?')) {
                 souvenirs = souvenirs.filter(s => s.id !== id);
+                saveLocal();
+                renderAdmin();
+                await saveToCloud();
+            }
+        }
+
+        // ============================================================
+        // REINITIALISER
+        // ============================================================
+        async function resetAll() {
+            if (souvenirs.length === 0) {
+                alert('Aucun souvenir a supprimer.');
+                return;
+            }
+
+            if (confirm('Supprimer tous les souvenirs ? Cette action est irreversible.')) {
+                souvenirs = JSON.parse(JSON.stringify(DEFAULT_SOUVENIRS));
                 saveLocal();
                 renderAdmin();
                 await saveToCloud();
@@ -690,23 +952,6 @@
                     <button class="admin-delete" onclick="deleteSouvenir(${s.id})">✕</button>
                 </div>
             `).join('');
-        }
-
-        // ============================================================
-        // REINITIALISER
-        // ============================================================
-        async function resetAll() {
-            if (souvenirs.length === 0) {
-                alert('Aucun souvenir a supprimer.');
-                return;
-            }
-
-            if (confirm('Supprimer tous les souvenirs ? Cette action est irreversible.')) {
-                souvenirs = JSON.parse(JSON.stringify(DEFAULT_SOUVENIRS));
-                saveLocal();
-                renderAdmin();
-                await saveToCloud();
-            }
         }
 
         // ============================================================
@@ -750,9 +995,14 @@
             }
         });
 
-        console.log('Admin - Mes Souvenirs prete !');
-        console.log('BIN_ID:', BIN_ID);
-        console.log('Synchronisation automatique activee');
+        // ============================================================
+        // DEMARRER
+        // ============================================================
+        checkSession();
+
+        console.log('✅ Admin - Mes Souvenirs prete !');
+        console.log('🔑 Supabase URL:', SUPABASE_URL);
+        console.log('👤 Authentification activee');
     </script>
 
 </body>

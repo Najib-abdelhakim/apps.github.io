@@ -497,26 +497,20 @@
             const s = souvenirs.find(s => s.id === id);
             if (!s) return;
 
-            // Initialiser likedBy si inexistant
             if (!s.likedBy) s.likedBy = [];
 
-            // Vérifier si l'utilisateur a déjà liké
             const hasLiked = s.likedBy.includes(visitorName);
 
             if (hasLiked) {
-                // Retirer le like
                 s.likedBy = s.likedBy.filter(name => name !== visitorName);
                 s.likes = (s.likes || 0) - 1;
             } else {
-                // Ajouter le like
                 s.likedBy.push(visitorName);
                 s.likes = (s.likes || 0) + 1;
             }
 
             saveLocal();
             renderCommunity();
-
-            // Sauvegarde automatique sur le cloud
             await saveToCloud();
         }
 
@@ -595,7 +589,7 @@
                     <div class="empty-state">
                         <span class="icon">📸</span>
                         <p>Aucun souvenir</p>
-                        <p style="font-size:0.8rem;">Les souvenirs apparaîtront ici</p>
+                        <p style="font-size:0.8rem;">Les souvenirs apparaitront ici</p>
                     </div>
                 `;
                 return;
@@ -604,7 +598,6 @@
             const sorted = [...souvenirs].reverse();
 
             container.innerHTML = sorted.map(s => {
-                // Vérifier si l'utilisateur a liké
                 const hasLiked = s.likedBy && s.likedBy.includes(visitorName);
                 const likeClass = hasLiked ? 'liked' : '';
                 const likeIcon = hasLiked ? '❤️' : '🤍';
@@ -657,8 +650,6 @@
         }, 30000);
 
         console.log('✅ Communaute - Mes Souvenirs prete !');
-        console.log('📌 BIN_ID:', BIN_ID);
-        console.log('🔄 Synchronisation automatique activee');
         console.log('👤 Visiteur:', visitorName);
         console.log('❤️ Like unique par utilisateur active');
     </script>
