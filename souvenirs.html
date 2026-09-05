@@ -98,8 +98,6 @@
             border: 1px solid #f5e8f0;
         }
 
-        .card h2 { font-size: 1rem; color: #6b4c7a; margin-bottom: 12px; }
-
         .post {
             background: white;
             border-radius: 16px;
@@ -148,9 +146,26 @@
             gap: 4px;
         }
 
-        .post .post-actions .like-btn { background: #fdf0f8; color: #c9a0d4; }
-        .post .post-actions .like-btn:hover { background: #c9a0d4; color: white; }
-        .post .post-actions .comment-btn { background: #f5e8f0; color: #b08bb8; }
+        .post .post-actions .like-btn {
+            background: #fdf0f8;
+            color: #c9a0d4;
+            transition: 0.3s;
+        }
+
+        .post .post-actions .like-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .post .post-actions .like-btn.liked {
+            background: #c9a0d4;
+            color: white;
+        }
+
+        .post .post-actions .comment-btn {
+            background: #f5e8f0;
+            color: #b08bb8;
+        }
+
         .post .post-actions .comment-btn:hover { background: #e8d4e0; }
 
         .post .post-comments {
@@ -410,7 +425,6 @@
                     }
                 }
 
-                // Si pas de donnees, charger depuis local ou defaut
                 loadLocal();
 
             } catch(e) {
@@ -477,16 +491,33 @@
         }
 
         // ============================================================
-        // LIKER (AUTO SAVE)
+        // LIKE UNIQUE
         // ============================================================
-        async function likeSouvenir(id) {
+        async function toggleLike(id) {
             const s = souvenirs.find(s => s.id === id);
-            if (s) {
+            if (!s) return;
+
+            // Initialiser likedBy si inexistant
+            if (!s.likedBy) s.likedBy = [];
+
+            // Vérifier si l'utilisateur a déjà liké
+            const hasLiked = s.likedBy.includes(visitorName);
+
+            if (hasLiked) {
+                // Retirer le like
+                s.likedBy = s.likedBy.filter(name => name !== visitorName);
+                s.likes = (s.likes || 0) - 1;
+            } else {
+                // Ajouter le like
+                s.likedBy.push(visitorName);
                 s.likes = (s.likes || 0) + 1;
-                saveLocal();
-                renderCommunity();
-                await saveToCloud();
             }
+
+            saveLocal();
+            renderCommunity();
+
+            // Sauvegarde automatique sur le cloud
+            await saveToCloud();
         }
 
         // ============================================================
@@ -572,7 +603,13 @@
 
             const sorted = [...souvenirs].reverse();
 
-            container.innerHTML = sorted.map(s => `
+            container.innerHTML = sorted.map(s => {
+                // Vérifier si l'utilisateur a liké
+                const hasLiked = s.likedBy && s.likedBy.includes(visitorName);
+                const likeClass = hasLiked ? 'liked' : '';
+                const likeIcon = hasLiked ? '❤️' : '🤍';
+
+                return `
                 <div class="post">
                     ${s.image ? `<img class="post-img" src="${s.image}" alt="${s.title}" onclick="openLightbox('${s.image}', '${s.title}', '${s.date}')">` : ''}
                     <div class="post-body">
@@ -581,7 +618,7 @@
                         <div class="post-text">${s.text}</div>
 
                         <div class="post-actions">
-                            <button class="like-btn" onclick="likeSouvenir(${s.id})">❤️ ${s.likes || 0}</button>
+                            <button class="like-btn ${likeClass}" onclick="toggleLike(${s.id})">${likeIcon} ${s.likes || 0}</button>
                             <button class="comment-btn" onclick="toggleComments(${s.id})">💬 ${s.comments ? s.comments.length : 0}</button>
                         </div>
 
@@ -596,7 +633,7 @@
                         </div>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         // ============================================================
@@ -614,14 +651,16 @@
         // ============================================================
         loadFromCloud();
 
-        // Recharger toutes les 30 secondes (synchronisation)
+        // Recharger toutes les 30 secondes
         setInterval(() => {
             loadFromCloud();
         }, 30000);
 
         console.log('✅ Communaute - Mes Souvenirs prete !');
         console.log('📌 BIN_ID:', BIN_ID);
-        console.log('🔄 Synchronisation automatique activee (toutes les 30s)');
+        console.log('🔄 Synchronisation automatique activee');
+        console.log('👤 Visiteur:', visitorName);
+        console.log('❤️ Like unique par utilisateur active');
     </script>
 
 </body>
