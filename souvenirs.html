@@ -33,16 +33,9 @@
             box-shadow: 0 4px 15px rgba(201, 160, 212, 0.3);
         }
 
-        .header h1 {
-            font-size: 1.6rem;
-        }
+        .header h1 { font-size: 1.6rem; }
+        .header .subtitle { font-size: 0.85rem; opacity: 0.9; }
 
-        .header .subtitle {
-            font-size: 0.85rem;
-            opacity: 0.9;
-        }
-
-        /* ===== NOM VISITEUR ===== */
         .visitor-box {
             background: white;
             border-radius: 20px;
@@ -56,12 +49,7 @@
             border: 1px solid #f5e8f0;
         }
 
-        .visitor-box label {
-            font-weight: 600;
-            color: #6b4c7a;
-            font-size: 0.9rem;
-        }
-
+        .visitor-box label { font-weight: 600; color: #6b4c7a; font-size: 0.9rem; }
         .visitor-box input {
             flex: 1;
             padding: 8px 14px;
@@ -73,9 +61,7 @@
             background: #fdf8fc;
         }
 
-        .visitor-box input:focus {
-            border-color: #c9a0d4;
-        }
+        .visitor-box input:focus { border-color: #c9a0d4; }
 
         .visitor-box .visitor-name-display {
             font-weight: 600;
@@ -112,11 +98,7 @@
             border: 1px solid #f5e8f0;
         }
 
-        .card h2 {
-            font-size: 1rem;
-            color: #6b4c7a;
-            margin-bottom: 12px;
-        }
+        .card h2 { font-size: 1rem; color: #6b4c7a; margin-bottom: 12px; }
 
         .post {
             background: white;
@@ -136,32 +118,13 @@
             transition: 0.3s;
         }
 
-        .post .post-img:hover {
-            opacity: 0.9;
-        }
+        .post .post-img:hover { opacity: 0.9; }
 
-        .post .post-body {
-            padding: 16px;
-        }
+        .post .post-body { padding: 16px; }
 
-        .post .post-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #6b4c7a;
-        }
-
-        .post .post-date {
-            font-size: 0.8rem;
-            color: #b08bb8;
-            margin-top: 2px;
-        }
-
-        .post .post-text {
-            font-size: 0.95rem;
-            color: #5a4a5a;
-            margin-top: 8px;
-            line-height: 1.5;
-        }
+        .post .post-title { font-size: 1.1rem; font-weight: 700; color: #6b4c7a; }
+        .post .post-date { font-size: 0.8rem; color: #b08bb8; margin-top: 2px; }
+        .post .post-text { font-size: 0.95rem; color: #5a4a5a; margin-top: 8px; line-height: 1.5; }
 
         .post .post-actions {
             display: flex;
@@ -185,24 +148,10 @@
             gap: 4px;
         }
 
-        .post .post-actions .like-btn {
-            background: #fdf0f8;
-            color: #c9a0d4;
-        }
-
-        .post .post-actions .like-btn:hover {
-            background: #c9a0d4;
-            color: white;
-        }
-
-        .post .post-actions .comment-btn {
-            background: #f5e8f0;
-            color: #b08bb8;
-        }
-
-        .post .post-actions .comment-btn:hover {
-            background: #e8d4e0;
-        }
+        .post .post-actions .like-btn { background: #fdf0f8; color: #c9a0d4; }
+        .post .post-actions .like-btn:hover { background: #c9a0d4; color: white; }
+        .post .post-actions .comment-btn { background: #f5e8f0; color: #b08bb8; }
+        .post .post-actions .comment-btn:hover { background: #e8d4e0; }
 
         .post .post-comments {
             margin-top: 10px;
@@ -217,13 +166,8 @@
             border-bottom: 1px solid #f5e8f0;
         }
 
-        .post .post-comments .comment:last-child {
-            border-bottom: none;
-        }
-
-        .post .post-comments .comment strong {
-            color: #6b4c7a;
-        }
+        .post .post-comments .comment:last-child { border-bottom: none; }
+        .post .post-comments .comment strong { color: #6b4c7a; }
 
         .post .comment-input-group {
             display: flex;
@@ -243,9 +187,7 @@
             background: #fdf8fc;
         }
 
-        .post .comment-input-group input[type="text"]:focus {
-            border-color: #c9a0d4;
-        }
+        .post .comment-input-group input[type="text"]:focus { border-color: #c9a0d4; }
 
         .post .comment-input-group button {
             padding: 8px 14px;
@@ -272,11 +214,22 @@
             color: #b08bb8;
         }
 
-        .empty-state .icon {
-            font-size: 3rem;
-            display: block;
-            margin-bottom: 8px;
+        .empty-state .icon { font-size: 3rem; display: block; margin-bottom: 8px; }
+
+        .btn-sync {
+            padding: 10px;
+            background: #b8a0c8;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 8px;
+            transition: 0.3s;
         }
+
+        .btn-sync:hover { background: #a088b8; }
 
         /* ===== LIGHTBOX ===== */
         .lightbox {
@@ -294,17 +247,11 @@
             animation: fadeInLightbox 0.3s ease;
         }
 
-        .lightbox.show {
-            display: flex;
-        }
+        .lightbox.show { display: flex; }
 
         @keyframes fadeInLightbox {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .lightbox .lightbox-img {
@@ -316,14 +263,8 @@
         }
 
         @keyframes zoomIn {
-            from {
-                transform: scale(0.9);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
         .lightbox .close-lightbox {
@@ -354,50 +295,19 @@
             padding: 0 20px;
         }
 
-        .lightbox .lightbox-caption .lb-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        .lightbox .lightbox-caption .lb-date {
-            font-size: 0.85rem;
-            opacity: 0.7;
-            margin-top: 4px;
-        }
+        .lightbox .lightbox-caption .lb-title { font-size: 1.1rem; font-weight: 600; }
+        .lightbox .lightbox-caption .lb-date { font-size: 0.85rem; opacity: 0.7; margin-top: 4px; }
 
         @media (max-width: 480px) {
-            .post .post-img {
-                height: 200px;
-            }
-            .post .post-actions {
-                flex-direction: column;
-                gap: 6px;
-            }
-            .post .post-actions button {
-                width: 100%;
-                justify-content: center;
-            }
-            .lightbox .close-lightbox {
-                font-size: 2rem;
-                top: 12px;
-                right: 18px;
-            }
-            .lightbox .lightbox-caption {
-                bottom: 16px;
-            }
-            .visitor-box {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .visitor-box input {
-                min-width: 100%;
-            }
-            .post .comment-input-group {
-                flex-direction: column;
-            }
-            .post .comment-input-group input[type="text"] {
-                min-width: 100%;
-            }
+            .post .post-img { height: 200px; }
+            .post .post-actions { flex-direction: column; gap: 6px; }
+            .post .post-actions button { width: 100%; justify-content: center; }
+            .lightbox .close-lightbox { font-size: 2rem; top: 12px; right: 18px; }
+            .lightbox .lightbox-caption { bottom: 16px; }
+            .visitor-box { flex-direction: column; align-items: stretch; }
+            .visitor-box input { min-width: 100%; }
+            .post .comment-input-group { flex-direction: column; }
+            .post .comment-input-group input[type="text"] { min-width: 100%; }
         }
     </style>
 </head>
@@ -410,7 +320,7 @@
             <div class="subtitle">Les souvenirs partages</div>
         </div>
 
-        <!-- ===== NOM DU VISITEUR ===== -->
+        <!-- NOM DU VISITEUR -->
         <div class="visitor-box">
             <label>Votre nom :</label>
             <input type="text" id="visitorNameInput" placeholder="Entrez votre nom..." maxlength="30">
@@ -419,14 +329,15 @@
         </div>
 
         <div class="card">
-            <div id="communityFeed">
+            <button class="btn-sync" onclick="loadFromCloud()">⬇️ Charger les souvenirs</button>
+            <div id="communityFeed" style="margin-top:12px;">
                 <!-- Les posts s'affichent ici -->
             </div>
         </div>
 
     </div>
 
-    <!-- ===== LIGHTBOX ===== -->
+    <!-- LIGHTBOX -->
     <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
         <button class="close-lightbox" onclick="closeLightbox(event)">✕</button>
         <img class="lightbox-img" id="lightboxImg" src="" alt="Souvenir">
@@ -437,6 +348,12 @@
     </div>
 
     <script>
+        // ============================================================
+        // CONFIGURATION JSONBin (TES INFOS)
+        // ============================================================
+        const BIN_ID = '6a9c3abbf5f4af5e296e72d0';
+        const API_KEY = '$2a$10$qNN8YjUeY27aYb.uZfI6h.OW0vsClncX.rr1AYVLYsiSZ84/QYTy2';
+
         // ============================================================
         // NOM DU VISITEUR
         // ============================================================
@@ -455,24 +372,63 @@
             localStorage.setItem('visitorName', name);
             document.getElementById('visitorNameDisplay').textContent = name;
             input.value = '';
-            renderCommunity();
         }
 
         document.getElementById('visitorNameDisplay').textContent = visitorName;
 
         document.getElementById('visitorNameInput').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                setVisitorName();
-            }
+            if (e.key === 'Enter') setVisitorName();
         });
 
         // ============================================================
         // DONNEES
         // ============================================================
-        let souvenirs = JSON.parse(localStorage.getItem('souvenirsAlbum')) || [];
+        let souvenirs = [];
 
-        function saveSouvenirs() {
+        function loadLocal() {
+            const saved = localStorage.getItem('souvenirsAlbum');
+            if (saved) {
+                try {
+                    souvenirs = JSON.parse(saved);
+                    renderCommunity();
+                } catch(e) {
+                    souvenirs = [];
+                    renderCommunity();
+                }
+            } else {
+                souvenirs = [];
+                renderCommunity();
+            }
+        }
+
+        function saveLocal() {
             localStorage.setItem('souvenirsAlbum', JSON.stringify(souvenirs));
+        }
+
+        // ============================================================
+        // CHARGER DEPUIS LE CLOUD
+        // ============================================================
+        async function loadFromCloud() {
+            try {
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`);
+                if (response.ok) {
+                    const data = await response.json();
+                    const cloudData = data.record;
+                    if (cloudData && cloudData.length > 0) {
+                        souvenirs = cloudData;
+                        saveLocal();
+                        renderCommunity();
+                        alert('✅ Donnees chargees depuis le cloud !');
+                    } else {
+                        alert('⚠️ Aucune donnee dans le cloud.');
+                    }
+                } else {
+                    const error = await response.text();
+                    alert('❌ Erreur de chargement : ' + error);
+                }
+            } catch(e) {
+                alert('❌ Erreur : ' + e.message);
+            }
         }
 
         // ============================================================
@@ -482,7 +438,7 @@
             const s = souvenirs.find(s => s.id === id);
             if (s) {
                 s.likes = (s.likes || 0) + 1;
-                saveSouvenirs();
+                saveLocal();
                 renderCommunity();
             }
         }
@@ -505,7 +461,7 @@
             if (s) {
                 if (!s.comments) s.comments = [];
                 s.comments.push({ user: name, text: text });
-                saveSouvenirs();
+                saveLocal();
                 renderCommunity();
                 input.value = '';
             }
@@ -547,9 +503,7 @@
         }
 
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeLightbox(e);
-            }
+            if (e.key === 'Escape') closeLightbox(e);
         });
 
         // ============================================================
@@ -562,8 +516,8 @@
                 container.innerHTML = `
                     <div class="empty-state">
                         <span class="icon">📸</span>
-                        <p>Aucun souvenir partage</p>
-                        <p style="font-size:0.8rem;">Les souvenirs apparaitront ici</p>
+                        <p>Aucun souvenir</p>
+                        <p style="font-size:0.8rem;">Clique sur "Charger les souvenirs"</p>
                     </div>
                 `;
                 return;
@@ -611,11 +565,11 @@
         // ============================================================
         // INIT
         // ============================================================
-        renderCommunity();
+        loadLocal();
 
         console.log('Communaute - Mes Souvenirs prete !');
-        console.log('Souvenirs :', souvenirs.length);
-        console.log('Visiteur :', visitorName);
+        console.log('✅ BIN_ID:', BIN_ID);
+        console.log('💡 Clique sur "Charger les souvenirs" pour voir les posts');
     </script>
 
 </body>
